@@ -250,6 +250,8 @@ function createOSCard(os, index) {
                     ${os.size}
                 </span>
                 <span class="meta-item family-tag">${os.familyIcon} ${os.family}</span>
+                <span class="meta-item">${os.edition}</span>
+                <span class="meta-item">${os.language}</span>
             </div>
             <p class="os-description">${os.description}</p>
             <a href="${os.downloadUrl}" class="download-btn${eol ? ' download-btn--eol' : ''}" target="_blank" rel="noopener noreferrer">
@@ -298,7 +300,9 @@ function getFilteredOS() {
             (os.codename && os.codename.toLowerCase().includes(term)) ||
             os.architecture.toLowerCase().includes(term) ||
             os.description.toLowerCase().includes(term) ||
-            os.family.toLowerCase().includes(term)
+            os.family.toLowerCase().includes(term) ||
+            os.language.toLowerCase().includes(term) ||
+            os.edition.toLowerCase().includes(term)
         );
     }
 
