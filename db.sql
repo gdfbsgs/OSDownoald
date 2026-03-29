@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS operating_systems (
     eos_date TEXT,
     is_lts INTEGER DEFAULT 0,
     is_supported INTEGER DEFAULT 1,
+    language TEXT DEFAULT 'English',
+    edition TEXT DEFAULT 'Standard',
     download_url TEXT NOT NULL,
     FOREIGN KEY (family_id) REFERENCES os_families(id)
 );
@@ -36,7 +38,7 @@ INSERT INTO os_families (id, name, icon) VALUES
 
 -- Windows 11
 INSERT INTO operating_systems (family_id, name, version, codename, architecture, size_gb, description, release_date, eos_date, is_lts, is_supported, download_url) VALUES
-(1, 'Windows 11', '24H2', 'Germanium', '64-bit', 5.8, 'Windows 11 version 24H2 (October 2024 Update). Features improved AI capabilities, Recall, enhanced Copilot integration, and performance improvements.', '2024-10-01', '2026-10-13', 0, 1, 'https://archive.org/download/english_windows_collection/Windows%2011%2024H2%20x64.iso'),
+(1, 'Windows 11', '24H2', 'Germanium', '64-bit', 5.8, 'Windows 11 version 24H2 (October 2024 Update). Features improved AI capabilities, Recall, enhanced Copilot integration, and performance improvements.', '2024-10-01', '2026-10-13', 0, 1, 'English', 'Pro', 'https://archive.org/download/english_windows_collection/Windows%2011%2024H2%20x64.iso'),
 (1, 'Windows 11', '23H2', 'Moment 5', '64-bit', 5.6, 'Windows 11 version 23H2 (November 2023 Update). Includes Windows Copilot, AI-powered features, and improved File Explorer with a modern design.', '2023-10-31', '2025-11-11', 0, 1, 'https://archive.org/download/english_windows_collection/Windows%2011/23H2/Win11_23H2_English_x64.iso'),
 (1, 'Windows 11', '22H2', 'Sun Valley 2', '64-bit', 5.4, 'Windows 11 version 22H2 (September 2022 Update). Brings Tabs in File Explorer, improved Snap Layouts, and Task Manager redesign.', '2022-09-20', '2024-10-08', 0, 0, 'https://archive.org/download/english_windows_collection/Windows%2011%2022H2%20x64.iso'),
 (1, 'Windows 11', '21H2', 'Sun Valley', '64-bit', 5.1, 'The original release of Windows 11. Features a centered Start Menu, redesigned taskbar, Snap Layouts, and DirectStorage support.', '2021-10-05', '2023-10-10', 0, 0, 'https://archive.org/download/english_windows_collection/Windows%2011%2021H2%20x64.iso'),

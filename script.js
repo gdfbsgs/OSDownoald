@@ -172,6 +172,8 @@ function transformData(osFamilies, operatingSystems) {
             eosDate: os.eos_date,
             isLTS: os.is_lts === '1' || os.is_lts === 1,
             isSupported: os.is_supported === '1' || os.is_supported === 1,
+            language: os.language || 'English',
+            edition: os.edition || 'Standard',
             downloadUrl: os.download_url,
             iconBg: iconBg,
             icon: icon
