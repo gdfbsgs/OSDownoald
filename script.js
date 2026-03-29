@@ -359,7 +359,7 @@ async function init() {
         // Fetch db.sql
         const response = await fetch('db.sql');
         if (!response.ok) {
-            throw new Error(`Failed to load db.sql: ${response.status}`);
+            throw new Error(`Failed to load db.sql: ${response.status} ${response.statusText}`);
         }
         const sql = await response.text();
         
@@ -375,11 +375,15 @@ async function init() {
         console.log(`Loaded ${osDatabase.length} operating systems from db.sql`);
     } catch (error) {
         console.error('Error loading database:', error);
+        let errorMessage = error.message;
+        if (error.message.includes('Failed to fetch')) {
+            errorMessage = 'Cannot load database file. This website must be served via a web server (not opened directly as a file). Please use a local development server or deploy to a web server.';
+        }
         osGrid.innerHTML = `
             <div style="text-align: center; padding: 2rem; color: var(--danger);">
                 <h3>Error loading database</h3>
-                <p>${error.message}</p>
-                <p>Make sure db.sql is accessible.</p>
+                <p>${errorMessage}</p>
+                <p>For local development, try: <code>npx serve</code> or <code>python -m http.server</code></p>
             </div>
         `;
     }
