@@ -68,6 +68,7 @@ INSERT INTO operating_systems (family_id, name, version, codename, architecture,
 
 -- Windows 8.1
 (1, 'Windows 8.1', '8.1', 'Blue', '64-bit', 3.5, 'Windows 8.1 - the final update to Windows 8. Brings back the Start button, improved apps, and better desktop integration. End of support January 2023.', '2013-10-17', '2023-01-10', 0, 0, 'https://archive.org/download/english_windows_collection/Windows%208.1%20x64.iso'),
+(1, 'Windows 8.1 RTM', '8.1 RTM', 'Build 9600', '64-bit', 3.5, '', 0, 0, 'https://archive.org/download/english_windows_collection/Windows%208.1/RTM/en_windows_8_1_x64_dvd_2707217.iso'),
 
 -- Windows 7
 (1, 'Windows 7', 'SP1', 'Vienna', '64-bit', 3.2, 'Windows 7 Service Pack 1. Classic and beloved OS known for its stability and ease of use. End of support January 2020. For legacy use only.', '2009-10-22', '2020-01-14', 0, 0, 'https://archive.org/download/english_windows_collection/Windows%207%20SP1%20x64.iso'),
