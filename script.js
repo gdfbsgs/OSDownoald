@@ -314,6 +314,7 @@ function getUniqueFieldValues(field, filtered = osDatabase) {
     const values = filtered.map(os => {
         if (field === 'edition') return os.edition || 'Standard';
         if (field === 'language') return os.language || 'English';
+        if (field === 'family') return os.family;
         return os[field];
     }).filter(v => v);
     return [...new Set(values)].sort();
@@ -426,4 +427,12 @@ async function init() {
 init();
 
 // Update no results text
-noResults.querySelector('p').textContent = 'Narrow your selection above to find specific ISOs';
+noResults.innerHTML = `
+    <svg class="no-results-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="M21 21l-4.35-4.35"/>
+    </svg>
+    <h3>No operating systems found</h3>
+    <p>Select OS family to begin</p>
+`;
+
