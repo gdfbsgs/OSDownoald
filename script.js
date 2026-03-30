@@ -187,7 +187,7 @@ function transformData(osFamilies, operatingSystems) {
 let osDatabase = [];
 let selection = {
     family: '',
-    main: '',
+    name: '',
     version: '',
     edition: '',
     language: ''
@@ -207,7 +207,7 @@ const languageSelect = document.getElementById('languageSelect');
 
 // Set data-field for selects
 familySelect.dataset.field = 'family';
-mainSelect.dataset.field = 'main';
+mainSelect.dataset.field = 'name';
 versionSelect.dataset.field = 'version';
 editionSelect.dataset.field = 'edition';
 languageSelect.dataset.field = 'language';
@@ -300,7 +300,7 @@ function renderOS(osList) {
 function getFilteredData() {
     return osDatabase.filter(os => 
         (!selection.family || os.family === selection.family) &&
-        (!selection.main || os.name === selection.main) &&
+        (!selection.name || os.name === selection.name) &&
         (!selection.version || os.version === selection.version) &&
         (!selection.edition || (os.edition || 'Standard') === selection.edition) &&
         (!selection.language || os.language === selection.language)
