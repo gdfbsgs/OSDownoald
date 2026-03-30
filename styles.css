@@ -521,6 +521,59 @@ body {
     }
 }
 
+/* ============================================================
+   Hierarchical Selectors
+   ============================================================ */
+.selectors-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.selector-group {
+    flex: 1;
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.selector-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.selector {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 0.75rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.selector:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    outline: none;
+}
+
+.selector:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.selector option {
+    padding: 0.5rem;
+}
+
 @media (max-width: 480px) {
     .container {
         padding: 0 1rem;
@@ -595,6 +648,15 @@ body {
         padding: 0.625rem 0.875rem;
         font-size: 0.875rem;
         border-radius: 0.625rem;
+    }
+
+    .selectors-container {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .selector-group {
+        min-width: unset;
     }
 }
 

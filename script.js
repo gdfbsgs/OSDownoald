@@ -182,21 +182,35 @@ function transformData(osFamilies, operatingSystems) {
 }
 
 // ============================================================
-// State
+ // State
 // ============================================================
-let currentFilter = "all";
-let currentSearch = "";
 let osDatabase = [];
+let selection = {
+    family: '',
+    main: '',
+    version: '',
+    edition: '',
+    language: ''
+};
 
 // ============================================================
-// DOM Elements
+ // DOM Elements
 // ============================================================
-const searchInput = document.getElementById('searchInput');
-const clearBtn = document.getElementById('clearBtn');
 const osGrid = document.getElementById('osGrid');
 const noResults = document.getElementById('noResults');
 const resultCount = document.getElementById('resultCount');
-const filterBtns = document.querySelectorAll('.filter-btn');
+const familySelect = document.getElementById('familySelect');
+const mainSelect = document.getElementById('mainSelect');
+const versionSelect = document.getElementById('versionSelect');
+const editionSelect = document.getElementById('editionSelect');
+const languageSelect = document.getElementById('languageSelect');
+
+// Set data-field for selects
+familySelect.dataset.field = 'family';
+mainSelect.dataset.field = 'main';
+versionSelect.dataset.field = 'version';
+editionSelect.dataset.field = 'edition';
+languageSelect.dataset.field = 'language';
 
 // ============================================================
 // Helpers
@@ -281,80 +295,96 @@ function renderOS(osList) {
 }
 
 // ============================================================
-// Filter Operating Systems
+ // Filter Data by Selection
 // ============================================================
-function getFilteredOS() {
-    let list = osDatabase;
-
-    // Family filter
-    if (currentFilter !== "all") {
-        list = list.filter(os => os.family.toLowerCase() === currentFilter.toLowerCase());
-    }
-
-    // Search filter
-    const term = currentSearch.toLowerCase().trim();
-    if (term) {
-        list = list.filter(os =>
-            os.name.toLowerCase().includes(term) ||
-            os.version.toString().toLowerCase().includes(term) ||
-            (os.codename && os.codename.toLowerCase().includes(term)) ||
-            os.architecture.toLowerCase().includes(term) ||
-            os.description.toLowerCase().includes(term) ||
-            os.family.toLowerCase().includes(term) ||
-            os.language.toLowerCase().includes(term) ||
-            os.edition.toLowerCase().includes(term)
-        );
-    }
-
-    return list;
+function getFilteredData() {
+    return osDatabase.filter(os => 
+        (!selection.family || os.family === selection.family) &&
+        (!selection.main || os.name === selection.main) &&
+        (!selection.version || os.version === selection.version) &&
+        (!selection.edition || (os.edition || 'Standard') === selection.edition) &&
+        (!selection.language || os.language === selection.language)
+    );
 }
 
 // ============================================================
-// Event Listeners
+ // Helper Functions
 // ============================================================
-searchInput.addEventListener('input', (e) => {
-    currentSearch = e.target.value;
-    renderOS(getFilteredOS());
-});
+function getUniqueFieldValues(field, filtered = osDatabase) {
+    const values = filtered.map(os => {
+        if (field === 'edition') return os.edition || 'Standard';
+        if (field === 'language') return os.language || 'English';
+        return os[field];
+    }).filter(v => v);
+    return [...new Set(values)].sort();
+}
 
-clearBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    currentSearch = '';
-    renderOS(getFilteredOS());
-    searchInput.focus();
-});
+function populateSelect(select, options, prompt = 'Select...') {
+    select.innerHTML = `<option value="">${prompt}</option>` +
+        options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+}
 
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.dataset.filter;
-        renderOS(getFilteredOS());
-    });
-});
+const selectOrder = ['familySelect', 'mainSelect', 'versionSelect', 'editionSelect', 'languageSelect'];
 
-// Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        searchInput.focus();
-        searchInput.select();
+function getNextSelectId(currentId) {
+    const index = selectOrder.indexOf(currentId);
+    return index < selectOrder.length - 1 ? selectOrder[index + 1] : null;
+}
+
+function enableSelect(selectId, enabled = true) {
+    const select = document.getElementById(selectId);
+    if (select) select.disabled = !enabled;
+}
+
+function resetSelectorsAfter(currentSelectId) {
+    const nextId = getNextSelectId(currentSelectId);
+    if (nextId) {
+        document.getElementById(nextId).value = '';
+        enableSelect(nextId, false);
+        resetSelectorsAfter(nextId);
     }
-    if (e.key === 'Escape' && document.activeElement === searchInput) {
-        searchInput.value = '';
-        currentSearch = '';
-        renderOS(getFilteredOS());
-        searchInput.blur();
+}
+
+// ============================================================
+ // Hierarchical Select Event Listeners
+// ============================================================
+function onSelectChange(e) {
+    const select = e.target;
+    const field = select.dataset.field;
+    selection[field] = select.value || '';
+
+    // Reset and disable subsequent selectors
+    resetSelectorsAfter(select.id);
+
+    // If selection made, populate next selector
+    if (select.value) {
+        const nextId = getNextSelectId(select.id);
+        if (nextId) {
+            const filtered = getFilteredData();
+            const nextField = document.getElementById(nextId).dataset.field;
+            const options = getUniqueFieldValues(nextField, filtered);
+            if (options.length > 0) {
+                populateSelect(document.getElementById(nextId), options);
+                enableSelect(nextId, true);
+            }
+        }
     }
+
+    // Render filtered results
+    renderOS(getFilteredData());
+}
+
+[familySelect, mainSelect, versionSelect, editionSelect, languageSelect].forEach(select => {
+    select.addEventListener('change', onSelectChange);
 });
 
 // ============================================================
-// Initialize - Fetch and parse db.sql
+ // Initialize - Fetch and parse db.sql
 // ============================================================
 async function init() {
     try {
         // Show loading state
-        osGrid.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-secondary);">Loading database...</div>';
+        osGrid.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-secondary);">Loading operating systems...</div>';
         
         // Fetch db.sql
         const response = await fetch('db.sql');
@@ -369,21 +399,24 @@ async function init() {
         // Transform to website format
         osDatabase = transformData(osFamilies, operatingSystems);
         
-        // Render
-        renderOS(getFilteredOS());
+        // Populate family selector
+        const families = getUniqueFieldValues('family');
+        populateSelect(familySelect, families, 'Select OS Family...');
+        
+        // Initial render - no results
+        renderOS([]);
         
         console.log(`Loaded ${osDatabase.length} operating systems from db.sql`);
     } catch (error) {
         console.error('Error loading database:', error);
         let errorMessage = error.message;
         if (error.message.includes('Failed to fetch')) {
-            errorMessage = 'Cannot load database file. This website must be served via a web server (not opened directly as a file). Please use a local development server or deploy to a web server.';
+            errorMessage = 'Cannot load database file. This website must be served via a web server (not opened directly as a file). Use: npx serve';
         }
         osGrid.innerHTML = `
             <div style="text-align: center; padding: 2rem; color: var(--danger);">
                 <h3>Error loading database</h3>
                 <p>${errorMessage}</p>
-                <p>For local development, try: <code>npx serve</code> or <code>python -m http.server</code></p>
             </div>
         `;
     }
@@ -391,3 +424,6 @@ async function init() {
 
 // Start the application
 init();
+
+// Update no results text
+noResults.querySelector('p').textContent = 'Narrow your selection above to find specific ISOs';

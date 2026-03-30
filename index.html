@@ -28,37 +28,43 @@
     <main class="main">
         <div class="container">
 
-            <!-- Search Bar -->
-            <div class="search-container">
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path d="M21 21l-4.35-4.35"/>
-                </svg>
-                <input
-                    type="text"
-                    id="searchInput"
-                    class="search-input"
-                    placeholder="Search for an operating system..."
-                    autocomplete="off"
-                >
-                <button class="search-clear" id="clearBtn" type="button" aria-label="Clear search">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 6L6 18M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Family Filter Buttons -->
-            <div class="filter-bar">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="Windows">🪟 Windows</button>
-                <button class="filter-btn" data-filter="Linux">🐧 Linux</button>
-                <button class="filter-btn" data-filter="macOS">🍎 macOS</button>
+            <!-- Hierarchical Selectors -->
+            <div class="selectors-container">
+                <div class="selector-group">
+                    <label for="familySelect" class="selector-label">OS Family</label>
+                    <select id="familySelect" class="selector">
+                        <option value="">Select OS...</option>
+                    </select>
+                </div>
+                <div class="selector-group">
+                    <label for="mainSelect" class="selector-label">Main Version</label>
+                    <select id="mainSelect" class="selector" disabled>
+                        <option value="">Choose version...</option>
+                    </select>
+                </div>
+                <div class="selector-group">
+                    <label for="versionSelect" class="selector-label">Build</label>
+                    <select id="versionSelect" class="selector" disabled>
+                        <option value="">Choose build...</option>
+                    </select>
+                </div>
+                <div class="selector-group">
+                    <label for="editionSelect" class="selector-label">Edition</label>
+                    <select id="editionSelect" class="selector" disabled>
+                        <option value="">Choose edition...</option>
+                    </select>
+                </div>
+                <div class="selector-group">
+                    <label for="languageSelect" class="selector-label">Language</label>
+                    <select id="languageSelect" class="selector" disabled>
+                        <option value="">Choose language...</option>
+                    </select>
+                </div>
             </div>
 
             <!-- Stats -->
             <div class="stats">
-                <span id="resultCount">59</span> ISO files available
+                <span id="resultCount">0</span> matching ISOs found
             </div>
 
             <!-- OS Grid -->
