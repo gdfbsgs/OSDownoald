@@ -138,128 +138,30 @@ function addEntry(family_id, name, version, codename, arch, size, desc, relDate,
 
 // ---- Windows 11 ----
 const win11Langs = languages.slice(0, 20); // 20 languages for Win11
+const archiveBase = 'https://archive.org/download/english_windows_collection';
+function archiveUrl(osName, ver, arch, edition) {
+  const safeName = osName.replace(/\s+/g, '.');
+  const safeVer = ver.replace(/[^a-zA-Z0-9.]/g, '');
+  const safeArch = arch === '64-bit' ? 'x64' : arch === '32-bit' ? 'x86' : arch;
+  const safeEd = edition.replace(/\s+/g, '.');
+  return `${archiveBase}/${safeName}.${safeVer}.English.${safeArch}.${safeEd}.iso`;
+}
 for (const b of win11Builds) {
   for (const ed of windows11Eds) {
     // x64
     for (const l of win11Langs) {
-      const url = b.ver === '24H2' && ed === 'Pro'
-        ? 'https://www.microsoft.com/software-download/windows11'
+      const url = l.code === 'en-US'
+        ? archiveUrl('Windows 11', b.ver, '64-bit', ed)
         : `https://www.microsoft.com/${l.code.toLowerCase().replace('-', '/')}/software-download/windows11`;
       addEntry(1, 'Windows 11', `${b.ver} (${b.build})`, b.codename, '64-bit', 5.8, b.desc, b.date, b.eos, b.isLTS || 0, b.supported, l.code, ed, url);
     }
     // ARM64 (24H2+ only)
     if (['24H2', '23H2'].includes(b.ver)) {
       for (const l of ['en-US', 'de-DE', 'fr-FR', 'es-ES', 'ja-JP', 'zh-CN']) {
-        addEntry(1, 'Windows 11', `${b.ver} (${b.build})`, b.codename, 'ARM64', 5.9, b.desc + ' ARM64 for Copilot+ PCs.', b.date, b.eos, b.isLTS || 0, b.supported, l, ed, `https://www.microsoft.com/software-download/windows11ARM64`);
-      }
-    }
-  }
-}
-
-// ---- Windows 10 ----
-const win10Langs = languages.slice(0, 24);
-for (const b of win10Builds) {
-  for (const ed of windows10Eds) {
-    const isLTSC = ed.includes('LTSC');
-    // x64
-    for (const l of win10Langs) {
-      addEntry(1, 'Windows 10', `${b.ver} (${b.build})`, b.codename, '64-bit', 5.2, b.desc, b.date, b.eos, b.isLTS || isLTSC ? 1 : 0, b.supported, l, ed, `https://www.microsoft.com/${l.code.toLowerCase().replace('-', '/')}/software-download/windows10ISO`);
-    }
-    // x86 (32-bit) for non-LTSC
-    if (!isLTSC) {
-      for (const l of ['en-US', 'de-DE', 'fr-FR', 'es-ES', 'pt-BR', 'ja-JP', 'zh-CN', 'ru-RU']) {
-        addEntry(1, 'Windows 10', `${b.ver} (${b.build})`, b.codename, '32-bit', 4.0, b.desc + ' 32-bit legacy.', b.date, b.eos, 0, b.supported, l, ed, `https://archive.org/details/windows10-${b.ver}-32bit`);
-      }
-    }
-  }
-}
-
-// ---- Windows 8.1 / 8 ----
-const win8Langs = languages.slice(0, 18);
-const win8Eds = ['Core', 'Pro', 'Enterprise'];
-for (const b of win8Builds) {
-  for (const ed of win8Eds) {
-    for (const l of win8Langs) {
-      const is81 = b.build.startsWith('9600');
-      addEntry(1, is81 ? 'Windows 8.1' : 'Windows 8', `${b.ver} (${b.build})`, b.codename, '64-bit', 4.2, b.desc, b.date, b.eos, 0, 0, l, ed, `https://archive.org/details/${is81 ? 'windows81' : 'windows8'}-${ed.toLowerCase().replace(' ', '-')}`);
-    }
-    // 32-bit
-    for (const l of ['en-US', 'de-DE', 'fr-FR', 'es-ES', 'pt-BR', 'ja-JP', 'zh-CN', 'ru-RU', 'it-IT', 'ko-KR']) {
-      const is81 = b.build.startsWith('9600');
-      addEntry(1, is81 ? 'Windows 8.1' : 'Windows 8', `${b.ver} (${b.build})`, b.codename, '32-bit', 3.8, b.desc + ' 32-bit.', b.date, b.eos, 0, 0, l, ed, `https://archive.org/details/${is81 ? 'windows81' : 'windows8'}-32bit`);
-    }
-  }
-}
-// Windows RT / ARM
-for (const l of ['en-US', 'de-DE', 'fr-FR', 'es-ES', 'ja-JP']) {
-  addEntry(1, 'Windows 8.1', 'RT (9600.16384)', 'Blue', 'ARM', 3.0, 'Windows RT 8.1 for ARM tablets.', '2013-10-17', '2023-01-10', 0, 0, l, 'RT', 'https://archive.org/details/windows-rt-8.1');
-  addEntry(1, 'Windows 8', 'RT (9200.16384)', 'Blue', 'ARM', 2.8, 'Windows RT for ARM tablets.', '2012-10-26', '2016-01-12', 0, 0, l, 'RT', 'https://archive.org/details/windows-rt');
-}
-
-// ---- Windows 7 ----
-const win7Langs = languages.slice(0, 20);
-for (const b of win7Builds) {
-  for (const ed of windows7Eds) {
-    for (const l of win7Langs) {
-      addEntry(1, 'Windows 7', `${b.ver} (${b.build})`, b.codename, '64-bit', 3.0, b.desc + ` ${ed}.`, b.date, b.eos, 0, 0, l, ed, `https://archive.org/details/windows-7-${ed.toLowerCase().replace(' ', '-')}-${b.ver.toLowerCase()}`);
-    }
-    // 32-bit
-    for (const l of ['en-US', 'de-DE', 'fr-FR', 'es-ES', 'pt-BR', 'ja-JP', 'zh-CN', 'ru-RU', 'it-IT', 'ko-KR']) {
-      addEntry(1, 'Windows 7', `${b.ver} (${b.build})`, b.codename, '32-bit', 2.5, b.desc + ` ${ed} 32-bit.`, b.date, b.eos, 0, 0, l, ed, `https://archive.org/details/windows-7-${ed.toLowerCase().replace(' ', '-')}-32bit`);
-    }
-  }
-}
-
-// ---- Windows Vista ----
-const vistaLangs = languages.slice(0, 16);
-for (const b of vistaBuilds) {
-  for (const ed of vistaEds) {
-    for (const l of vistaLangs) {
-      addEntry(1, 'Windows Vista', `${b.ver} (${b.build})`, b.codename, '64-bit', 3.2, b.desc + ` ${ed}.`, b.date, b.eos, 0, 0, l, ed, `https://archive.org/details/vista-${ed.toLowerCase().replace(' ', '-')}`);
-    }
-    for (const l of ['en-US', 'de-DE', 'fr-FR', 'es-ES', 'ja-JP', 'zh-CN', 'ru-RU', 'it-IT']) {
-      addEntry(1, 'Windows Vista', `${b.ver} (${b.build})`, b.codename, '32-bit', 2.8, b.desc + ` ${ed} 32-bit.`, b.date, b.eos, 0, 0, l, ed, `https://archive.org/details/vista-${ed.toLowerCase().replace(' ', '-')}-32bit`);
-    }
-  }
-}
-
-// ---- Windows XP ----
-const xpLangs = languages.slice(0, 18);
-for (const b of xpBuilds) {
-  for (const ed of xpEds) {
-    const isX64 = ed.includes('x64');
-    for (const l of xpLangs) {
-      addEntry(1, 'Windows XP', `${b.ver} (${b.build})`, b.codename, isX64 ? '64-bit' : '32-bit', isX64 ? 0.9 : 0.7, b.desc + ` ${ed}.`, b.date, b.eos, 0, 0, l, ed, `https://archive.org/details/windows-xp-${ed.toLowerCase().replace(' ', '-')}`);
-    }
-  }
-}
-
-// ---- Windows Server ----
-const serverLangs = languages.slice(0, 12);
-for (const b of serverBuilds) {
-  for (const ed of serverEds) {
-    for (const l of serverLangs) {
-      addEntry(1, 'Windows Server', `${b.ver} (${b.build})`, b.codename, '64-bit', 6.0, b.desc + ` ${ed}.`, b.date, b.eos, b.isLTS || 0, b.supported, l, ed, `https://www.microsoft.com/en-us/windows-server`);
-    }
-  }
-}
-
-// ---- Legacy Windows ----
-const legacyEntries = [
-  ['Windows ME', '4.90.3000', 'Millennium', '32-bit', 0.3, 'Windows Millennium Edition final.', '2000-09-14', '2003-12-31'],
-  ['Windows 98 SE', '4.10.2222A', 'Memphis', '32-bit', 0.2, 'Windows 98 Second Edition.', '1999-05-05', '2006-07-11'],
-  ['Windows 98', '4.10.1998', 'Memphis', '32-bit', 0.2, 'Windows 98 First Edition.', '1998-05-16', '2006-07-11'],
-  ['Windows 95 OSR2.5', '4.03.1214', 'Chicago', '32-bit', 0.1, 'Windows 95 OSR2.5 with USB/FAT32.', '1996-11-01', '2001-12-31'],
-  ['Windows 95', '4.00.950', 'Chicago', '32-bit', 0.1, 'Windows 95 original.', '1995-08-24', '2001-12-31'],
-  ['Windows 3.11', '3.11', 'Janus', '16-bit', 0.015, 'Windows for Workgroups 3.11.', '1993-11-08', '2001-12-31'],
-  ['Windows 3.1', '3.10', 'Janus', '16-bit', 0.012, 'Windows 3.1 original.', '1992-04-06', '2001-12-31'],
-  ['Windows 2.11', '2.11', '', '16-bit', 0.005, 'Windows/286 and Windows/386 2.11.', '1988-05-27', '2001-12-31'],
-  ['Windows 2.0', '2.03', '', '16-bit', 0.004, 'Windows 2.0 with overlapping windows.', '1987-12-09', '2001-12-31'],
-  ['Windows 1.0', '1.04', '', '16-bit', 0.003, 'Windows 1.0 first release.', '1985-11-20', '2001-12-31']
-];
-for (const [name, ver, code, arch, size, desc, rel, eos] of legacyEntries) {
-  for (const l of ['en-US', 'de-DE', 'fr-FR', 'es-ES', 'ja-JP']) {
-    addEntry(1, name, ver, code, arch, size, desc, rel, eos, 0, 0, l, 'Standard', `https://archive.org/details/${name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`);
+        const url = l === 'en-US'
+          ? archiveUrl('Windows 11', b.ver, 'ARM64', ed)
+          : `https://www.microsoft.com/software-download/windows11ARM64`;
+        addEntry(1, 'Windows 11', `${b.ver} (${b.build})`, b.codename, 'ARM64', 5.9, b.desc + ' ARM64 for Copilot+ PCs.', b.date, b.eos, b.isLTS || 0, b.supported, l, ed, url);
   }
 }
 

@@ -539,6 +539,74 @@ body {
     gap: 0.25rem;
 }
 
+.selector-group-reset {
+    flex: 0 0 auto;
+    min-width: auto;
+    justify-content: flex-end;
+}
+
+.reset-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 0.75rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+    height: fit-content;
+}
+
+.reset-btn:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.reset-btn svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+.selector-group-reset {
+    flex: 0 0 auto;
+    min-width: auto;
+    justify-content: flex-end;
+}
+
+.reset-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 0.75rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+    height: fit-content;
+}
+
+.reset-btn:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.reset-btn svg {
+    width: 1rem;
+    height: 1rem;
+}
+
 .selector-label {
     font-size: 0.75rem;
     font-weight: 500;

@@ -193,6 +193,12 @@ let selection = {
     language: ''
 };
 
+// Track which selectors are currently active (have a meaningful selection)
+let activeSelectors = new Set();
+
+// Track which selectors are currently active (have a meaningful selection)
+let activeSelectors = new Set();
+
 // ============================================================
  // DOM Elements
 // ============================================================
@@ -204,6 +210,7 @@ const mainSelect = document.getElementById('mainSelect');
 const versionSelect = document.getElementById('versionSelect');
 const editionSelect = document.getElementById('editionSelect');
 const languageSelect = document.getElementById('languageSelect');
+const resetBtn = document.getElementById('resetBtn');
 
 // Set data-field for selects
 familySelect.dataset.field = 'family';
@@ -340,25 +347,38 @@ function enableSelect(selectId, enabled = true) {
 function resetSelectorsAfter(currentSelectId) {
     const nextId = getNextSelectId(currentSelectId);
     if (nextId) {
-        document.getElementById(nextId).value = '';
+        const nextSelect = document.getElementById(nextId);
+        nextSelect.value = '';
         enableSelect(nextId, false);
+        // Clear selection and active state for this field
+        const nextField = nextSelect.dataset.field;
+        selection[nextField] = '';
+        activeSelectors.delete(nextField);
         resetSelectorsAfter(nextId);
     }
 }
+}
 
 // ============================================================
- // Hierarchical Select Event Listeners
+  // Hierarchical Select Event Listeners
 // ============================================================
 function onSelectChange(e) {
     const select = e.target;
     const field = select.dataset.field;
-    selection[field] = select.value || '';
+    const value = select.value || '';
+    selection[field] = value;
+
+    if (value) {
+        activeSelectors.add(field);
+    } else {
+        activeSelectors.delete(field);
+    }
 
     // Reset and disable subsequent selectors
     resetSelectorsAfter(select.id);
 
     // If selection made, populate next selector
-    if (select.value) {
+    if (value) {
         const nextId = getNextSelectId(select.id);
         if (nextId) {
             const filtered = getFilteredData();
@@ -369,6 +389,33 @@ function onSelectChange(e) {
                 enableSelect(nextId, true);
             }
         }
+    } else {
+        // If cleared, also reset subsequent selectors
+        resetSelectorsAfter(select.id);
+    }
+
+    // Render filtered results
+    renderOS(getFilteredData());
+}
+
+    // Reset and disable subsequent selectors
+    resetSelectorsAfter(select.id);
+
+    // If selection made, populate next selector
+    if (value) {
+        const nextId = getNextSelectId(select.id);
+        if (nextId) {
+            const filtered = getFilteredData();
+            const nextField = document.getElementById(nextId).dataset.field;
+            const options = getUniqueFieldValues(nextField, filtered);
+            if (options.length > 0) {
+                populateSelect(document.getElementById(nextId), options);
+                enableSelect(nextId, true);
+            }
+        }
+    } else {
+        // If cleared, also reset subsequent selectors
+        resetSelectorsAfter(select.id);
     }
 
     // Render filtered results
@@ -378,6 +425,52 @@ function onSelectChange(e) {
 [familySelect, mainSelect, versionSelect, editionSelect, languageSelect].forEach(select => {
     select.addEventListener('change', onSelectChange);
 });
+
+// ============================================================
+ // Reset All Filters
+// ============================================================
+function resetAllFilters() {
+    selection = { family: '', name: '', version: '', edition: '', language: '' };
+    activeSelectors.clear();
+    
+    selectOrder.forEach(id => {
+        const select = document.getElementById(id);
+        select.value = '';
+        enableSelect(id, id === 'familySelect');
+    });
+    
+    // Repopulate family select
+    const families = getUniqueFieldValues('family');
+    populateSelect(familySelect, families, 'Select OS Family...');
+    
+    // Clear results
+    renderOS([]);
+}
+
+resetBtn.addEventListener('click', resetAllFilters);
+
+// ============================================================
+ // Reset All Filters
+// ============================================================
+function resetAllFilters() {
+    selection = { family: '', name: '', version: '', edition: '', language: '' };
+    activeSelectors.clear();
+    
+    selectOrder.forEach(id => {
+        const select = document.getElementById(id);
+        select.value = '';
+        enableSelect(id, id === 'familySelect');
+    });
+    
+    // Repopulate family select
+    const families = getUniqueFieldValues('family');
+    populateSelect(familySelect, families, 'Select OS Family...');
+    
+    // Clear results
+    renderOS([]);
+}
+
+resetBtn.addEventListener('click', resetAllFilters);
 
 // ============================================================
  // Initialize - Fetch and parse db.sql

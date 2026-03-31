@@ -37,15 +37,15 @@
                     </select>
                 </div>
                 <div class="selector-group">
-                    <label for="mainSelect" class="selector-label">Main Version</label>
+                    <label for="mainSelect" class="selector-label">OS Name</label>
                     <select id="mainSelect" class="selector" disabled>
-                        <option value="">Choose version...</option>
+                        <option value="">Choose OS...</option>
                     </select>
                 </div>
                 <div class="selector-group">
-                    <label for="versionSelect" class="selector-label">Build</label>
+                    <label for="versionSelect" class="selector-label">Version</label>
                     <select id="versionSelect" class="selector" disabled>
-                        <option value="">Choose build...</option>
+                        <option value="">Choose version...</option>
                     </select>
                 </div>
                 <div class="selector-group">
@@ -59,6 +59,16 @@
                     <select id="languageSelect" class="selector" disabled>
                         <option value="">Choose language...</option>
                     </select>
+                </div>
+                <div class="selector-group selector-group-reset">
+                    <label class="selector-label">&nbsp;</label>
+                    <button id="resetBtn" class="reset-btn" title="Reset all filters">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                            <path d="M3 3v5h5"/>
+                        </svg>
+                        Reset
+                    </button>
                 </div>
             </div>
 
