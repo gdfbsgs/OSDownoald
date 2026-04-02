@@ -293,9 +293,44 @@ function renderOS(osList) {
         noResults.style.display = 'block';
     } else {
         noResults.style.display = 'none';
-        osGrid.innerHTML = osList.map((os, index) => createOSCard(os, index)).join('');
+        // Virtual pagination - show first 50 only
+        const pageSize = 50;
+        const page1 = osList.slice(0, pageSize);
+        osGrid.innerHTML = page1.map((os, index) => createOSCard(os, index)).join('');
+        
+        // Load More button
+        const loadMore = document.createElement('button');
+        loadMore.textContent = `Load More (${osList.length - pageSize} remaining)`;
+        loadMore.className = 'load-more-btn';
+        loadMore.onclick = () => loadMoreResults(osList, pageSize);
+        osGrid.appendChild(loadMore);
     }
     resultCount.textContent = osList.length;
+}
+
+let currentOffset = 50;
+
+function loadMoreResults(fullList, pageSize) {
+    const more = fullList.slice(currentOffset, currentOffset + pageSize);
+    if (more.length === 0) return;
+    
+    more.forEach((os, idx) => {
+        const card = document.createElement('article');
+        card.className = 'os-card';
+        card.style.animationDelay = '0ms';
+        card.innerHTML = createOSCard(os, 0).slice(0, -7); // remove </article>
+        osGrid.insertBefore(card, osGrid.lastElementChild);
+    });
+    currentOffset += pageSize;
+    
+    // Update button
+    const btn = osGrid.querySelector('.load-more-btn');
+    const remaining = fullList.length - currentOffset;
+    if (remaining > 0) {
+        btn.textContent = `Load More (${remaining} remaining)`;
+    } else {
+        btn.remove();
+    }
 }
 
 // ============================================================
@@ -429,8 +464,8 @@ async function init() {
         // Show loading state
         osGrid.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-secondary);">Loading operating systems...</div>';
         
-        // Fetch db.sql
-        const response = await fetch('db.sql');
+        // Fetch unified database.sql
+        const response = await fetch('database.sql');
         if (!response.ok) {
             throw new Error(`Failed to load db.sql: ${response.status} ${response.statusText}`);
         }

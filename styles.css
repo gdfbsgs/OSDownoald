@@ -214,6 +214,24 @@ body {
     gap: 1.5rem;
 }
 
+.load-more-btn {
+    grid-column: 1 / -1;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+    color: white;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    margin: 2rem auto;
+    transition: transform 0.2s;
+}
+
+.load-more-btn:hover {
+    transform: scale(1.05);
+}
+
 /* ============================================================
    OS Card
    ============================================================ */
