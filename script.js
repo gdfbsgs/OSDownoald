@@ -196,9 +196,6 @@ let selection = {
 // Track which selectors are currently active (have a meaningful selection)
 let activeSelectors = new Set();
 
-// Track which selectors are currently active (have a meaningful selection)
-let activeSelectors = new Set();
-
 // ============================================================
  // DOM Elements
 // ============================================================
@@ -357,7 +354,6 @@ function resetSelectorsAfter(currentSelectId) {
         resetSelectorsAfter(nextId);
     }
 }
-}
 
 // ============================================================
   // Hierarchical Select Event Listeners
@@ -373,30 +369,6 @@ function onSelectChange(e) {
     } else {
         activeSelectors.delete(field);
     }
-
-    // Reset and disable subsequent selectors
-    resetSelectorsAfter(select.id);
-
-    // If selection made, populate next selector
-    if (value) {
-        const nextId = getNextSelectId(select.id);
-        if (nextId) {
-            const filtered = getFilteredData();
-            const nextField = document.getElementById(nextId).dataset.field;
-            const options = getUniqueFieldValues(nextField, filtered);
-            if (options.length > 0) {
-                populateSelect(document.getElementById(nextId), options);
-                enableSelect(nextId, true);
-            }
-        }
-    } else {
-        // If cleared, also reset subsequent selectors
-        resetSelectorsAfter(select.id);
-    }
-
-    // Render filtered results
-    renderOS(getFilteredData());
-}
 
     // Reset and disable subsequent selectors
     resetSelectorsAfter(select.id);
@@ -450,29 +422,6 @@ function resetAllFilters() {
 resetBtn.addEventListener('click', resetAllFilters);
 
 // ============================================================
- // Reset All Filters
-// ============================================================
-function resetAllFilters() {
-    selection = { family: '', name: '', version: '', edition: '', language: '' };
-    activeSelectors.clear();
-    
-    selectOrder.forEach(id => {
-        const select = document.getElementById(id);
-        select.value = '';
-        enableSelect(id, id === 'familySelect');
-    });
-    
-    // Repopulate family select
-    const families = getUniqueFieldValues('family');
-    populateSelect(familySelect, families, 'Select OS Family...');
-    
-    // Clear results
-    renderOS([]);
-}
-
-resetBtn.addEventListener('click', resetAllFilters);
-
-// ============================================================
  // Initialize - Fetch and parse db.sql
 // ============================================================
 async function init() {
@@ -501,6 +450,7 @@ async function init() {
         renderOS([]);
         
         console.log(`Loaded ${osDatabase.length} operating systems from db.sql`);
+        console.log('Families loaded:', families.length);
     } catch (error) {
         console.error('Error loading database:', error);
         let errorMessage = error.message;
