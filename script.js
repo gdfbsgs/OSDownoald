@@ -464,8 +464,8 @@ async function init() {
         // Show loading state
         osGrid.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-secondary);">Loading operating systems...</div>';
         
-        // Fetch unified database.sql
-        const response = await fetch('database.sql');
+        // Fetch complete unified database
+        const response = await fetch('complete-database.sql');
         if (!response.ok) {
             throw new Error(`Failed to load db.sql: ${response.status} ${response.statusText}`);
         }
