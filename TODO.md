@@ -6,10 +6,11 @@
 - Added 50+ new software entries (Office 365, Adobe, VMware, etc.)
 - Updated `script.js`: Removed "Unknown" from selectors, filter non-empty values only
 - Verified all download URLs are remote (archive.org/Microsoft)
+- **NEW**: Updated `script.js` to fetch `complete-database.sql` directly (no db.sql rename), fixed SQL parser for unquoted values (no more '[object Object]'), added filtering for valid entries only
 - Tested with `run-server.bat` - no local /isos/ paths
 
 ## Database Stats
-- **Total entries**: 5,124
+- **Total entries**: 5,124+
 - **Windows**: 3,200+
 - **Linux**: 450+
 - **macOS**: 200+
@@ -21,3 +22,4 @@
 - Organized by family > name > version > edition > language
 
 App fully functional. Run `run-server.bat` to test locally.
+
