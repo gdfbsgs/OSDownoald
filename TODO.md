@@ -1,25 +1,38 @@
-# OSClick Task Complete ✅
+# OSClick Improvement Plan (Approved & Updated - Progress: Database partially deduped)
 
-## Summary of Changes
-- Fixed Win10 language generation bug in `generate-db.js` (used `l.code` consistently)
-- Regenerated `complete-database.sql` with 5,124 organized entries (reduced redundancy)
-- Added 50+ new software entries (Office 365, Adobe, VMware, etc.)
-- Updated `script.js`: Removed "Unknown" from selectors, filter non-empty values only
-- Verified all download URLs are remote (archive.org/Microsoft)
-- **NEW**: Updated `script.js` to fetch `complete-database.sql` directly (no db.sql rename), fixed SQL parser for unquoted values (no more '[object Object]'), added filtering for valid entries only
-- Tested with `run-server.bat` - no local /isos/ paths
+## Task: Improve UI + Organize Database + Better ISO Search Method
 
-## Database Stats
-- **Total entries**: 5,124+
-- **Windows**: 3,200+
-- **Linux**: 450+
-- **macOS**: 200+
-- **Software**: 274 (expanded)
+**Information Gathered Summary:**
+- Database: dedup-simple.js reduced to 13 unique lines (basic dedup done), dedup-db.js failed (no sqlite3). Still ~6000 entries with duplicates/[object Object] bugs.
+- UI Files analyzed: script.js (hierarchical filtering, SQL parser), index.html (selectors/cards), styles.css (dark theme, responsive).
+- Current search: Pure hierarchical selectors → slow on large db, no global search.
+- Next: Fix db (manual clean + new entries), implement hybrid search (global text search + refiners).
 
-## Deployment Ready
-- GitHub Pages compatible (no local files needed)
-- Selectors show only real options (no "Unknown")
-- Organized by family > name > version > edition > language
+## Detailed Steps:
 
-App fully functional. Run `run-server.bat` to test locally.
+### 1. ✅ Analyzed files & created detailed plan
+### 2. ✅ Created/Updated this TODO.md  
+### 3. ✅ **Database Organization (Partial)**
+   - ✅ `node dedup-simple.js` → 13 unique INSERT lines (basic line dedup)
+   - ❌ `node dedup-db.js` → Missing sqlite3 module
+   - ☐ Manual fix: Replace [object Object] languages, append 500+ new Linux/macOS/Android entries
+### 4. ☐ **Improve Search Method (Priority 1 Now)**
+   - Add global search bar (#searchInput) above selectors
+   - script.js: Add fuzzy search on name/version/edition/description + hierarchical refine on results
+   - Debounced input, show/hide selectors based on search
+### 5. ☐ **Fix Database Issues**
+   - Edit complete-database.sql: Fix language='[object Object]' → proper codes (en-US etc.)
+   - Add ~200 Linux (Ubuntu/Fedora/Debian + derivatives), 100 macOS, 100 others
+### 6. ☐ **UI Polish & Perf**
+   - styles.css: Search styling, mobile improvements
+   - script.js: Fix parser for languages, optimize filtering (debounce, virtual scroll)
+### 7. ☐ **Testing**  
+   - run-server.bat: Test search \"ubuntu\", hierarchical refine, no errors
+### 8. ☐ attempt_completion
+
+**Progress Tracking:** Update ✓/✗ as completed.
+**Next Action:** Add global search + fix [object Object] languages.
+
+
+
 

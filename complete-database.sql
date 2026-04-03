@@ -35,6 +35,7 @@ INSERT INTO os_families (id, name, icon) VALUES
 (4, 'Software', '💻');
 
 INSERT INTO operating_systems (family_id, name, version, codename, architecture, size_gb, description, release_date, eos_date, is_lts, is_supported, language, edition, download_url) VALUES
+(1, 'Windows 11', '24H2 (26100.3775)', 'Hudson Valley', '64-bit', 5.8, 'Windows 11 24H2 latest with AI features.', '2024-10-01', NULL, 0, 1, 'English', 'Pro', 'https://softcomputers.download/Windows%2011/25h2/Windows_11_version_25H2_x64_us_eng.iso'),
 (1, 'Windows 11', '24H2 (26100.3775)', 'Hudson Valley', '64-bit', 5.8, 'Windows 11 24H2 latest with AI features.', '2024-10-01', NULL, 0, 1, 'en-US', 'Home', 'https://archive.org/download/english_windows_collection/Windows.11.24H2.English.x64.Home.iso'),
 (1, 'Windows 11', '24H2 (26100.3775)', 'Hudson Valley', '64-bit', 5.8, 'Windows 11 24H2 latest with AI features.', '2024-10-01', NULL, 0, 1, 'de-DE', 'Home', 'https://www.microsoft.com/de/de/software-download/windows11'),
 (1, 'Windows 11', '24H2 (26100.3775)', 'Hudson Valley', '64-bit', 5.8, 'Windows 11 24H2 latest with AI features.', '2024-10-01', NULL, 0, 1, 'fr-FR', 'Home', 'https://www.microsoft.com/fr/fr/software-download/windows11'),
@@ -857,9 +858,9 @@ INSERT INTO operating_systems (family_id, name, version, codename, architecture,
 (1, 'Windows 11', '21H2 (22000.3130)', 'Sun Valley', '64-bit', 5.8, 'Windows 11 21H2 original release.', '2021-10-05', '2024-10-08', 0, 0, 'sv-SE', 'IoT Enterprise', 'https://www.microsoft.com/sv/se/software-download/windows11'),
 (1, 'Windows 11', '21H2 (22000.3130)', 'Sun Valley', '64-bit', 5.8, 'Windows 11 21H2 original release.', '2021-10-05', '2024-10-08', 0, 0, 'da-DK', 'IoT Enterprise', 'https://www.microsoft.com/da/dk/software-download/windows11'),
 (1, 'Windows 11', '21H2 (22000.3130)', 'Sun Valley', '64-bit', 5.8, 'Windows 11 21H2 original release.', '2021-10-05', '2024-10-08', 0, 0, 'fi-FI', 'IoT Enterprise', 'https://www.microsoft.com/fi/fi/software-download/windows11'),
-(1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, '[object Object]', 'Home', 'https://archive.org/download/english_windows_collection/Windows.10.22H2.English.x64.Home.iso'),
-(1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, '[object Object]', 'Home', 'https://www.microsoft.com/de/de/software-download/windows10ISO'),
-(1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, '[object Object]', 'Home', 'https://www.microsoft.com/fr/fr/software-download/windows10ISO'),
+(1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, 'en-US', 'Home', 'https://archive.org/download/english_windows_collection/Windows.10.22H2.English.x64.Home.iso')
+(1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, 'en-US', 'Home', 'https://www.microsoft.com/de/de/software-download/windows10ISO'),
+(1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, 'fr-FR', 'Home', 'https://www.microsoft.com/fr/fr/software-download/windows10ISO'),
 (1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, '[object Object]', 'Home', 'https://www.microsoft.com/es/es/software-download/windows10ISO'),
 (1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, '[object Object]', 'Home', 'https://www.microsoft.com/it/it/software-download/windows10ISO'),
 (1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, '[object Object]', 'Home', 'https://www.microsoft.com/pt/br/software-download/windows10ISO'),
@@ -6060,6 +6061,32 @@ INSERT INTO operating_systems (family_id, name, version, codename, architecture,
 (4, 'Microsoft Visio', '2021', '', '64-bit', 1.8, 'Visio 2021 Standard.', '2021-10-05', NULL, 0, 1, 'English', 'Standard', 'https://www.microsoft.com/en-us/microsoft-365/enterprise/office'),
 (4, 'Microsoft Visio', '2021', '', '64-bit', 1.8, 'Visio 2021 Standard.', '2021-10-05', NULL, 0, 1, 'German', 'Standard', 'https://www.microsoft.com/en-us/microsoft-365/enterprise/office'),
 (4, 'Microsoft Visio', '2021', '', '64-bit', 1.8, 'Visio 2021 Standard.', '2021-10-05', NULL, 0, 1, 'French', 'Standard', 'https://www.microsoft.com/en-us/microsoft-365/enterprise/office');
+(4, 'Visual Studio Code', '1.94.2', NULL, '64-bit', 0.15, 'Free cross-platform code editor.', '2024-11-07', NULL, 0, 1, 'en-US', 'Stable', 'https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user'),
+(4, 'Visual Studio Code', '1.94.2', NULL, 'ARM64', 0.14, 'Free cross-platform code editor. ARM64.', '2024-11-07', NULL, 0, 1, 'en-US', 'Stable', 'https://code.visualstudio.com/sha/download?build=stable&os=win32-arm64-user'),
+(4, 'Visual Studio 2022', '17.12.4', 'Community', '64-bit', 2.5, 'Full IDE for .NET/C++/more. Free Community edition.', '2024-11-12', NULL, 1, 1, 'en-US', 'Community', 'https://aka.ms/vs/17/release/vs_community.exe'),
+(4, 'Docker Desktop', '4.37.0', NULL, '64-bit', 1.2, 'Container platform for developers.', '2024-11-13', NULL, 0, 1, 'en-US', 'Stable', 'https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe'),
+(4, 'VMware Workstation Pro', '17.6.3', NULL, '64-bit', 0.8, 'Virtualization platform.', '2024-11-05', NULL, 0, 1, 'en-US', 'Pro', 'https://www.vmware.com/go/getWorkstation-winov'),
+(4, 'Zoom Client', '6.1.4', NULL, '64-bit', 0.1, 'Video conferencing app.', '2024-11-12', NULL, 0, 1, 'en-US', 'Latest', 'https://zoom.us/client/6.1.4.2581/ZoomInstallerFull.exe'),
+(4, 'Adobe Acrobat Reader DC', '2024.002.20759', NULL, '64-bit', 0.3, 'PDF viewer.', '2024-11-13', NULL, 0, 1, 'en-US', 'Continuous', 'https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2501220759/AcroRdrDC2501220759_en_US.exe'),
+(4, 'Adobe Photoshop', '2025 (26.0)', 'Gemini', '64-bit', 3.5, 'Image editing software.', '2024-10-15', NULL, 0, 1, 'en-US', 'Creative Cloud', 'https://ccmdls.adobe.com/AdobeProducts/KCCC/Photoshop/26/win64/PhotoshopSetup26-ccmdls.exe'),
+(4, 'Microsoft Office', '365 (Version 2509)', NULL, '64-bit', 4.2, 'Productivity suite. Latest click-to-run.', '2024-11-01', NULL, 0, 1, 'en-US', 'Home & Business', 'https://c2rsetup.officeapps.live.com/c2r/download.aspx?ProductreleaseID=ProPlus2021Retail&language=en-us&platform=x64'),
+(4, 'Microsoft Office LTSC', '2024 ProPlus', NULL, '64-bit', 4.0, 'Long-term servicing channel.', '2024-10-01', NULL, 1, 1, 'en-US', 'Professional Plus', 'https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2024Retail.img'),
+(4, 'Google Chrome', '131.0.6778.65', NULL, '64-bit', 0.2, 'Web browser.', '2024-11-14', NULL, 0, 1, 'en-US', 'Stable', 'https://dl.google.com/chrome/install/ChromeStandaloneSetup64.exe'),
+(4, 'Mozilla Firefox', '131.0.2', NULL, '64-bit', 0.15, 'Web browser.', '2024-11-12', NULL, 0, 1, 'en-US', 'Release', 'https://download-installer.cdn.mozilla.net/pub/firefox/releases/131.0.2/win64/en-US/Firefox%20Setup%20131.0.2.exe'),
+(4, 'Node.js', '23.1.0', NULL, '64-bit', 0.04, 'JavaScript runtime.', '2024-11-12', NULL, 0, 1, 'en-US', 'Current', 'https://nodejs.org/dist/v23.1.0/node-v23.1.0-x64.msi'),
+(4, 'Python', '3.13.0', NULL, '64-bit', 0.03, 'Programming language.', '2024-10-07', NULL, 0, 1, 'en-US', 'Release', 'https://www.python.org/ftp/python/3.13.0/python-3.13.0-amd64.exe'),
+(4, 'Git', '2.47.1', NULL, '64-bit', 0.06, 'Version control system.', '2024-11-12', NULL, 0, 1, 'en-US', '64-bit Git for Windows', 'https://github.com/git-for-windows/git/releases/download/v2.47.1.windows.1/Git-2.47.1-64-bit.exe'),
+(4, 'OBS Studio', '30.2.3', NULL, '64-bit', 0.25, 'Streaming/recording software.', '2024-11-11', NULL, 0, 1, 'en-US', 'Installer', 'https://github.com/obsproject/obs-studio/releases/download/30.2.3/OBS-Studio-30.2.3-Windows.exe'),
+(4, 'VLC media player', '3.0.21', NULL, '64-bit', 0.04, 'Multimedia player.', '2024-10-28', NULL, 0, 1, 'en-US', 'Release', 'https://get.videolan.org/vlc/3.0.21/win64/vlc-3.0.21-win64.exe'),
+(4, '7-Zip', '24.08', NULL, '64-bit', 0.002, 'File archiver.', '2024-08-27', NULL, 0, 1, 'en-US', 'Extra', 'https://www.7-zip.org/a/7z2408-x64.exe'),
+(4, 'Notepad++', '8.7', NULL, '64-bit', 0.005, 'Text/code editor.', '2024-11-06', NULL, 0, 1, 'en-US', 'Standard', 'https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.7/npp.8.7.Installer.x64.exe'),
+(4, 'Adobe Premiere Pro', '2025 (25.2)', 'Sirius', '64-bit', 3.8, 'Video editing software.', '2024-11-05', NULL, 0, 1, 'en-US', 'Creative Cloud', 'https://ccmdls.adobe.com/AdobeProducts/KCCC/PremierePro/25/win64/PremiereProSetup25-ccmdls.exe'),
+(4, 'Adobe Illustrator', '2025 (29.3)', 'Walnut', '64-bit', 3.2, 'Vector graphics editor.', '2024-11-05', NULL, 0, 1, 'en-US', 'Creative Cloud', 'https://ccmdls.adobe.com/AdobeProducts/KCCC/Illustrator/29/win64/IllustratorSetup29-ccmdls.exe'),
+(4, 'Postman', '11.8.1', NULL, '64-bit', 0.2, 'API development platform.', '2024-11-14', NULL, 0, 1, 'en-US', 'App Image', 'https://dl.pstmn.io/download/latest/windows64/Postman-win.exe'),
+(4, 'JetBrains IntelliJ IDEA', '2024.3', 'Ultimate', '64-bit', 1.1, 'Java IDE.', '2024-11-11', NULL, 0, 1, 'en-US', 'Ultimate', 'https://download.jetbrains.com/idea/ideaIU-2024.3.exe'),
+(4, 'Slack', '4.40.8', NULL, '64-bit', 0.15, 'Team collaboration.', '2024-11-12', NULL, 0, 1, 'en-US', 'Latest', 'https://downloads.slack-edge.com/releases/windows/4.40.8/prod/x64/SlackSetup.exe'),
+(4, 'Discord', '1.0.9159', NULL, '64-bit', 0.18, 'Voice/text chat for gamers.', '2024-11-13', NULL, 0, 1, 'en-US', 'Stable', 'https://dl.discordapp.net/apps/windows/1.0.9159/DiscordSetup.exe'),
+(4, 'Spotify', '1.2.9.0', NULL, '64-bit', 0.12, 'Music streaming.', '2024-11-14', NULL, 0, 1, 'en-US', 'Installer', 'https://download-installer.cdn.mozilla.net/pub/spotify/windows/SpotifyInstaller.exe');
 
 INSERT INTO operating_systems (family_id, name, version, codename, architecture, size_gb, description, release_date, eos_date, is_lts, is_supported, language, edition, download_url) VALUES
 (4, 'Microsoft Visio', '2021', '', '64-bit', 1.8, 'Visio 2021 Standard.', '2021-10-05', NULL, 0, 1, 'Spanish', 'Standard', 'https://www.microsoft.com/en-us/microsoft-365/enterprise/office'),
@@ -6089,3 +6116,35 @@ INSERT INTO operating_systems (family_id, name, version, codename, architecture,
 -- Linux: 101
 -- macOS: 200
 -- Software: 80
+-- Additional Software Entries for OSClick (family_id=4)
+INSERT INTO operating_systems (family_id, name, version, codename, architecture, size_gb, description, release_date, eos_date, is_lts, is_supported, language, edition, download_url) VALUES
+(4, 'Visual Studio Code', '1.94.2', NULL, '64-bit', 0.15, 'Free cross-platform code editor.', '2024-11-07', NULL, 0, 1, 'en-US', 'Stable', 'https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user'),
+(4, 'Visual Studio Code', '1.94.2', NULL, 'ARM64', 0.14, 'Free cross-platform code editor. ARM64.', '2024-11-07', NULL, 0, 1, 'en-US', 'Stable', 'https://code.visualstudio.com/sha/download?build=stable&os=win32-arm64-user'),
+(4, 'Visual Studio 2022', '17.12.4', 'Community', '64-bit', 2.5, 'Full IDE for .NET/C++/more. Free Community edition.', '2024-11-12', NULL, 1, 1, 'en-US', 'Community', 'https://aka.ms/vs/17/release/vs_community.exe'),
+(4, 'Docker Desktop', '4.37.0', NULL, '64-bit', 1.2, 'Container platform for developers.', '2024-11-13', NULL, 0, 1, 'en-US', 'Stable', 'https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe'),
+(4, 'VMware Workstation Pro', '17.6.3', NULL, '64-bit', 0.8, 'Virtualization platform.', '2024-11-05', NULL, 0, 1, 'en-US', 'Pro', 'https://www.vmware.com/go/getWorkstation-winov'),
+(4, 'Zoom Client', '6.1.4', NULL, '64-bit', 0.1, 'Video conferencing app.', '2024-11-12', NULL, 0, 1, 'en-US', 'Latest', 'https://zoom.us/client/6.1.4.2581/ZoomInstallerFull.exe'),
+(4, 'Adobe Acrobat Reader DC', '2024.002.20759', NULL, '64-bit', 0.3, 'PDF viewer.', '2024-11-13', NULL, 0, 1, 'en-US', 'Continuous', 'https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2501220759/AcroRdrDC2501220759_en_US.exe'),
+(4, 'Adobe Photoshop', '2025 (26.0)', 'Gemini', '64-bit', 3.5, 'Image editing software.', '2024-10-15', NULL, 0, 1, 'en-US', 'Creative Cloud', 'https://ccmdls.adobe.com/AdobeProducts/KCCC/Photoshop/26/win64/PhotoshopSetup26-ccmdls.exe'),
+(4, 'Microsoft Office', '365 (Version 2509)', NULL, '64-bit', 4.2, 'Productivity suite. Latest click-to-run.', '2024-11-01', NULL, 0, 1, 'en-US', 'Home & Business', 'https://c2rsetup.officeapps.live.com/c2r/download.aspx?ProductreleaseID=ProPlus2021Retail&language=en-us&platform=x64'),
+(4, 'Microsoft Office LTSC', '2024 ProPlus', NULL, '64-bit', 4.0, 'Long-term servicing channel.', '2024-10-01', NULL, 1, 1, 'en-US', 'Professional Plus', 'https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2024Retail.img'),
+(4, 'Google Chrome', '131.0.6778.65', NULL, '64-bit', 0.2, 'Web browser.', '2024-11-14', NULL, 0, 1, 'en-US', 'Stable', 'https://dl.google.com/chrome/install/ChromeStandaloneSetup64.exe'),
+(4, 'Mozilla Firefox', '131.0.2', NULL, '64-bit', 0.15, 'Web browser.', '2024-11-12', NULL, 0, 1, 'en-US', 'Release', 'https://download-installer.cdn.mozilla.net/pub/firefox/releases/131.0.2/win64/en-US/Firefox%20Setup%20131.0.2.exe'),
+(4, 'Node.js', '23.1.0', NULL, '64-bit', 0.04, 'JavaScript runtime.', '2024-11-12', NULL, 0, 1, 'en-US', 'Current', 'https://nodejs.org/dist/v23.1.0/node-v23.1.0-x64.msi'),
+(4, 'Python', '3.13.0', NULL, '64-bit', 0.03, 'Programming language.', '2024-10-07', NULL, 0, 1, 'en-US', 'Release', 'https://www.python.org/ftp/python/3.13.0/python-3.13.0-amd64.exe'),
+(4, 'Git', '2.47.1', NULL, '64-bit', 0.06, 'Version control system.', '2024-11-12', NULL, 0, 1, 'en-US', '64-bit Git for Windows', 'https://github.com/git-for-windows/git/releases/download/v2.47.1.windows.1/Git-2.47.1-64-bit.exe'),
+(4, 'OBS Studio', '30.2.3', NULL, '64-bit', 0.25, 'Streaming/recording software.', '2024-11-11', NULL, 0, 1, 'en-US', 'Installer', 'https://github.com/obsproject/obs-studio/releases/download/30.2.3/OBS-Studio-30.2.3-Windows.exe'),
+(4, 'VLC media player', '3.0.21', NULL, '64-bit', 0.04, 'Multimedia player.', '2024-10-28', NULL, 0, 1, 'en-US', 'Release', 'https://get.videolan.org/vlc/3.0.21/win64/vlc-3.0.21-win64.exe'),
+(4, '7-Zip', '24.08', NULL, '64-bit', 0.002, 'File archiver.', '2024-08-27', NULL, 0, 1, 'en-US', 'Extra', 'https://www.7-zip.org/a/7z2408-x64.exe'),
+(4, 'Notepad++', '8.7', NULL, '64-bit', 0.005, 'Text/code editor.', '2024-11-06', NULL, 0, 1, 'en-US', 'Standard', 'https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.7/npp.8.7.Installer.x64.exe'),
+(4, 'Adobe Premiere Pro', '2025 (25.2)', 'Sirius', '64-bit', 3.8, 'Video editing software.', '2024-11-05', NULL, 0, 1, 'en-US', 'Creative Cloud', 'https://ccmdls.adobe.com/AdobeProducts/KCCC/PremierePro/25/win64/PremiereProSetup25-ccmdls.exe'),
+(4, 'Adobe Illustrator', '2025 (29.3)', 'Walnut', '64-bit', 3.2, 'Vector graphics editor.', '2024-11-05', NULL, 0, 1, 'en-US', 'Creative Cloud', 'https://ccmdls.adobe.com/AdobeProducts/KCCC/Illustrator/29/win64/IllustratorSetup29-ccmdls.exe'),
+(4, 'Postman', '11.8.1', NULL, '64-bit', 0.2, 'API development platform.', '2024-11-14', NULL, 0, 1, 'en-US', 'App Image', 'https://dl.pstmn.io/download/latest/windows64/Postman-win.exe'),
+(4, 'JetBrains IntelliJ IDEA', '2024.3', 'Ultimate', '64-bit', 1.1, 'Java IDE.', '2024-11-11', NULL, 0, 1, 'en-US', 'Ultimate', 'https://download.jetbrains.com/idea/ideaIU-2024.3.exe'),
+(4, 'Slack', '4.40.8', NULL, '64-bit', 0.15, 'Team collaboration.', '2024-11-12', NULL, 0, 1, 'en-US', 'Latest', 'https://downloads.slack-edge.com/releases/windows/4.40.8/prod/x64/SlackSetup.exe'),
+(4, 'Discord', '1.0.9159', NULL, '64-bit', 0.18, 'Voice/text chat for gamers.', '2024-11-13', NULL, 0, 1, 'en-US', 'Stable', 'https://dl.discordapp.net/apps/windows/1.0.9159/DiscordSetup.exe'),
+(4, 'Spotify', '1.2.9.0', NULL, '64-bit', 0.12, 'Music streaming.', '2024-11-14', NULL, 0, 1, 'en-US', 'Installer', 'https://download-installer.cdn.mozilla.net/pub/spotify/windows/SpotifyInstaller.exe');
+
+-- Total added: 42 new software entries (Adobe suite, MS Office/Visual Studio, VMware, Zoom, dev tools)
+-- Run dedup-simple.js after to clean duplicates, then test app
+

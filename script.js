@@ -185,6 +185,7 @@ function transformData(osFamilies, operatingSystems) {
  // State
 // ============================================================
 let osDatabase = [];
+let searchTerm = '';
 let selection = {
     family: '',
     name: '',
@@ -192,6 +193,7 @@ let selection = {
     edition: '',
     language: ''
 };
+
 
 // Track which selectors are currently active (have a meaningful selection)
 let activeSelectors = new Set();
@@ -233,61 +235,94 @@ function isEOL(eosDate) {
 // ============================================================
 // Create OS Card HTML
 // ============================================================
-function createOSCard(os, index) {
-    const eol = isEOL(os.eosDate);
-    const ltsTag = os.isLTS ? `<span class="tag tag-lts">LTS</span>` : '';
-    const eolTag = eol ? `<span class="tag tag-eol">EOL</span>` : '';
-    const supportedTag = !eol && os.isSupported ? `<span class="tag tag-supported">Supported</span>` : '';
-    const codenameHtml = os.codename ? `<span class="os-codename">${os.codename}</span>` : '';
+async function validateLink(url) {
+  if (!url || url === '#') return false;
+  try {
+    const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
 
-    return `
-        <article class="os-card${eol ? ' os-card--eol' : ''}" style="animation-delay: ${index * 40}ms">
-            <div class="os-header">
-                <div class="os-icon" style="background-color: ${os.iconBg};">
-                    <span>${os.icon}</span>
-                </div>
-                <div class="os-info">
-                    <h2 class="os-name">${os.name}</h2>
-                    <div class="os-version-row">
-                        <span class="os-version">${os.version}</span>
-                        ${codenameHtml}
-                    </div>
-                </div>
-            </div>
-            <div class="os-tags">
-                ${ltsTag}${supportedTag}${eolTag}
-            </div>
-            <div class="os-meta">
-                <span class="meta-item arch">${os.architecture}</span>
-                <span class="meta-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                        <polyline points="7,10 12,15 17,10"/>
-                        <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                    ${os.size}
-                </span>
-                <span class="meta-item family-tag">${os.familyIcon} ${os.family}</span>
-                <span class="meta-item">${os.edition}</span>
-                <span class="meta-item">${os.language}</span>
-            </div>
-            <p class="os-description">${os.description}</p>
-            <a href="${os.downloadUrl}" class="download-btn${eol ? ' download-btn--eol' : ''}" target="_blank" rel="noopener noreferrer">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                    <polyline points="7,10 12,15 17,10"/>
-                    <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                ${eol ? 'Download (EOL)' : 'Download ISO'}
-            </a>
-        </article>
-    `;
+async function createOSCard(os, index) {
+  const eol = isEOL(os.eosDate);
+  const initialWorking = os.downloadUrl ? 'pending' : false;
+  const ltsTag = os.isLTS ? `<span class="tag tag-lts">LTS</span>` : '';
+  const eolTag = eol ? `<span class="tag tag-eol">EOL</span>` : '';
+  const supportedTag = !eol && os.isSupported ? `<span class="tag tag-supported">Supported</span>` : '';
+  const codenameHtml = os.codename ? `<span class="os-codename">${os.codename}</span>` : '';
+
+  const card = document.createElement('article');
+  card.className = `os-card${eol ? ' os-card--eol' : ''}`;
+  card.style.animationDelay = `${index * 40}ms`;
+  card.dataset.url = os.downloadUrl || '';
+  card.innerHTML = `
+    <div class="os-header">
+      <div class="os-icon" style="background-color: ${os.iconBg};">
+        <span>${os.icon}</span>
+      </div>
+      <div class="os-info">
+        <h2 class="os-name">${os.name}</h2>
+        <div class="os-version-row">
+          <span class="os-version">${os.version}</span>
+          ${codenameHtml}
+        </div>
+      </div>
+    </div>
+    <div class="os-tags">
+      ${ltsTag}${supportedTag}${eolTag}
+    </div>
+    <div class="os-meta">
+      <span class="meta-item arch">${os.architecture}</span>
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+          <polyline points="7,10 12,15 17,10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        ${os.size}
+      </span>
+      <span class="meta-item family-tag">${os.familyIcon} ${os.family}</span>
+      <span class="meta-item">${os.edition}</span>
+      <span class="meta-item">${os.language}</span>
+    </div>
+    <p class="os-description">${os.description}</p>
+    <a href="${os.downloadUrl || '#'}" class="download-btn${eol ? ' download-btn--eol' : ''} download-btn--pending" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="7,10 12,15 17,10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      ${!os.downloadUrl ? 'No Download Link' : (eol ? 'Download (EOL)' : 'Checking...')}
+    </a>
+  `;
+
+  // Validate link async
+  if (os.downloadUrl) {
+    setTimeout(async () => {
+      const working = await validateLink(os.downloadUrl);
+      const btn = card.querySelector('.download-btn');
+      if (btn) {
+        btn.classList.remove('download-btn--pending');
+        if (working) {
+          btn.classList.add('download-btn--working');
+          btn.textContent = btn.textContent.replace('Checking...', eol ? 'Download (EOL)' : 'Download ISO');
+        } else {
+          btn.classList.add('download-btn--disabled');
+          btn.textContent = btn.textContent.replace('Checking...', 'Link Not Available');
+        }
+      }
+    }, 100 + index * 50); // Staggered check
+  }
+
+  return card;
 }
 
 // ============================================================
 // Render OS Cards
 // ============================================================
-function renderOS(osList) {
+async function renderOS(osList) {
     if (osList.length === 0) {
         osGrid.innerHTML = '';
         noResults.style.display = 'block';
@@ -296,7 +331,11 @@ function renderOS(osList) {
         // Virtual pagination - show first 50 only
         const pageSize = 50;
         const page1 = osList.slice(0, pageSize);
-        osGrid.innerHTML = page1.map((os, index) => createOSCard(os, index)).join('');
+        osGrid.innerHTML = '';
+        for (let i = 0; i < page1.length; i++) {
+            const card = await createOSCard(page1[i], i);
+            osGrid.appendChild(card);
+        }
         
         // Load More button
         const loadMore = document.createElement('button');
@@ -334,10 +373,30 @@ function loadMoreResults(fullList, pageSize) {
 }
 
 // ============================================================
- // Filter Data by Selection
+ // Search Function (fuzzy match on key fields)
+ // ============================================================
+function performSearch(query, data) {
+    if (!query.trim()) return data;
+    const q = query.toLowerCase().trim();
+    return data.filter(os => 
+        os.name.toLowerCase().includes(q) ||
+        os.version.toLowerCase().includes(q) ||
+        (os.edition || '').toLowerCase().includes(q) ||
+        (os.description || '').toLowerCase().includes(q) ||
+        os.family.toLowerCase().includes(q) ||
+        os.language.toLowerCase().includes(q)
+    );
+}
+
 // ============================================================
+ // Filter Data (search first, then selectors)
+ // ============================================================
 function getFilteredData() {
-    return osDatabase.filter(os => 
+    let filtered = osDatabase;
+    if (searchTerm) {
+        filtered = performSearch(searchTerm, filtered);
+    }
+    return filtered.filter(os => 
         (!selection.family || os.family === selection.family) &&
         (!selection.name || os.name === selection.name) &&
         (!selection.version || os.version === selection.version) &&
@@ -345,6 +404,7 @@ function getFilteredData() {
         (!selection.language || os.language === selection.language)
     );
 }
+
 
 // ============================================================
  // Helper Functions
@@ -429,6 +489,17 @@ function onSelectChange(e) {
     renderOS(getFilteredData());
 }
 
+function onSearchChange() {
+    const query = document.getElementById('searchInput').value;
+    searchTerm = query;
+    renderOS(getFilteredData());
+    // Repopulate selectors based on search results
+    const filtered = getFilteredData();
+    const families = getUniqueFieldValues('family', filtered);
+    populateSelect(familySelect, families, 'All Families');
+}
+
+
 [familySelect, mainSelect, versionSelect, editionSelect, languageSelect].forEach(select => {
     select.addEventListener('change', onSelectChange);
 });
@@ -437,6 +508,9 @@ function onSelectChange(e) {
  // Reset All Filters
 // ============================================================
 function resetAllFilters() {
+    searchTerm = '';
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchClear').style.display = 'none';
     selection = { family: '', name: '', version: '', edition: '', language: '' };
     activeSelectors.clear();
     
@@ -454,12 +528,31 @@ function resetAllFilters() {
     renderOS([]);
 }
 
+
 resetBtn.addEventListener('click', resetAllFilters);
+
+// Search input listeners (debounced)
+const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
+
+let searchTimeout;
+searchInput.addEventListener('input', (e) => {
+    searchClear.style.display = e.target.value ? 'block' : 'none';
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(onSearchChange, 300);
+});
+
+searchClear.addEventListener('click', () => {
+    searchInput.value = '';
+    searchClear.style.display = 'none';
+    onSearchChange();
+});
 
 // ============================================================
  // Initialize - Fetch and parse db.sql
 // ============================================================
 async function init() {
+
     try {
         // Show loading state
         osGrid.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-secondary);">Loading operating systems...</div>';
