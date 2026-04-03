@@ -1,0 +1,9 @@
+@echo off
+echo Generating fresh database...
+node generate-db.js
+echo Deduplicating for production...
+node dedup-simple.js
+echo Starting OSClick server...
+echo Open http://localhost:3000
+npx serve .
+pause
