@@ -1,15 +1,14 @@
 # OSClick Implementation Steps
-From approved plan - breaking into logical steps:
+Approved plan breakdown - progress tracking:
 
-1. [x] Add global search input to index.html (above selectors-container)
-2. [x] Update script.js: Add search state, performSearch function (fuzzy match name/version/etc.), integrate into getFilteredData(), add debounced event listener for #searchInput
-3. [ ] Update styles.css if needed for search integration
-4. [x] Fix complete-database.sql: Replace all '[object Object]' with 'en-US' (multiple edit_file calls)
-5. [ ] Append ~400 new OS entries to complete-database.sql (Linux/macOS/Android/FreeBSD etc. with official links)
-6. [ ] Test: run-server.bat, verify hybrid search + selectors work, no parser errors
-7. [ ] Perf/UI polish if time (suggestions, debounce confirmed)
-8. [ ] Update this TODO-steps.md (mark complete)
-9. [ ] attempt_completion
+1. [ ] Update this TODO-steps.md with full step list
+2. [ ] Fix all '[object Object]' languages in complete-database.sql
+3. [ ] Append 400+ new OS entries (Linux distros/macOS/Android/BSD) to complete-database.sql
+4. [ ] Enhance script.js search/perf (fuzzy, codename, optimize parser)
+5. [ ] Minor styles.css polish if needed (mobile search/selectors)
+6. [ ] Test: execute run-server.bat, verify search/filter/new entries/links/mobile
+7. [ ] Update TODO.md progress
+8. [ ] attempt_completion
 
-**Current step: 1/9**
-
+**Current step: 1/8**
+**Notes:** DB has 6021 entries, heavy Windows. Adding balance with Linux/etc. Test hybrid search \"ubuntu 24.04\" → hierarchical refine.

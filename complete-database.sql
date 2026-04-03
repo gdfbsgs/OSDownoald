@@ -861,9 +861,9 @@ INSERT INTO operating_systems (family_id, name, version, codename, architecture,
 (1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, 'en-US', 'Home', 'https://archive.org/download/english_windows_collection/Windows.10.22H2.English.x64.Home.iso')
 (1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, 'en-US', 'Home', 'https://www.microsoft.com/de/de/software-download/windows10ISO'),
 (1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, 'fr-FR', 'Home', 'https://www.microsoft.com/fr/fr/software-download/windows10ISO'),
-(1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, '[object Object]', 'Home', 'https://www.microsoft.com/es/es/software-download/windows10ISO'),
-(1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, '[object Object]', 'Home', 'https://www.microsoft.com/it/it/software-download/windows10ISO'),
-(1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, '[object Object]', 'Home', 'https://www.microsoft.com/pt/br/software-download/windows10ISO'),
+(1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, 'es-ES', 'Home', 'https://www.microsoft.com/es/es/software-download/windows10ISO')
+(1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, 'it-IT', 'Home', 'https://www.microsoft.com/it/it/software-download/windows10ISO')
+(1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, 'pt-BR', 'Home', 'https://www.microsoft.com/pt/br/software-download/windows10ISO')
 (1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, '[object Object]', 'Home', 'https://www.microsoft.com/pt/pt/software-download/windows10ISO'),
 (1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, '[object Object]', 'Home', 'https://www.microsoft.com/zh/cn/software-download/windows10ISO'),
 (1, 'Windows 10', '22H2 (19045.5011)', 'Sun Valley 2', '64-bit', 5.2, 'Windows 10 final feature update.', '2022-10-18', '2025-10-14', 0, 1, '[object Object]', 'Home', 'https://www.microsoft.com/zh/tw/software-download/windows10ISO'),
@@ -6000,6 +6000,73 @@ INSERT INTO operating_systems (family_id, name, version, codename, architecture,
 (3, 'Mac OS X Snow Leopard', '10.6.8', 'Snow Leopard', 'ARM64/x86_64', 4, 'Mac OS X Snow Leopard final.', '2011-07-25', NULL, 0, 1, 'Korean', 'Standard', 'https://support.apple.com/en-us/HT213707'),
 (3, 'Mac OS X Snow Leopard', '10.6.8', 'Snow Leopard', 'ARM64/x86_64', 4, 'Mac OS X Snow Leopard final.', '2011-07-25', NULL, 0, 1, 'Russian', 'Standard', 'https://support.apple.com/en-us/HT213707'),
 
+-- Ubuntu LTS (family_id 2 = Linux)
+(2, 'Ubuntu', '24.04 LTS', 'Noble Numbat', '64-bit', 5.1, 'Ubuntu 24.04 LTS with GNOME 46, 5 years standard support.', '2024-04-25', '2029-04', 1, 1, 'en-US', 'Desktop', 'https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso'),
+(2, 'Ubuntu', '24.04 LTS', 'Noble Numbat', '64-bit', 4.2, 'Ubuntu 24.04 LTS Server Edition.', '2024-04-25', '2029-04', 1, 1, 'en-US', 'Server', 'https://releases.ubuntu.com/24.04/ubuntu-24.04-live-server-amd64.iso'),
+(2, 'Ubuntu', '24.04 LTS', 'Noble Numbat', 'ARM64', 4.8, 'Ubuntu 24.04 LTS for ARM devices.', '2024-04-25', '2029-04', 1, 1, 'en-US', 'Desktop ARM', 'https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-arm64.iso'),
+(2, 'Ubuntu', '22.04.4 LTS', 'Jammy Jellyfish', '64-bit', 4.7, 'Ubuntu 22.04 LTS latest point release.', '2022-04-21', '2027-04', 1, 1, 'en-US', 'Desktop', 'https://releases.ubuntu.com/22.04.4/ubuntu-22.04.4-desktop-amd64.iso'),
+(2, 'Ubuntu', '22.04.4 LTS', 'Jammy Jellyfish', '64-bit', 3.9, 'Ubuntu 22.04 LTS Server.', '2022-04-21', '2027-04', 1, 1, 'en-US', 'Server', 'https://releases.ubuntu.com/22.04.4/ubuntu-22.04.4-live-server-amd64.iso'),
+
+-- Ubuntu Daily/Other
+(2, 'Ubuntu', '24.10', 'Oracular Oriole', '64-bit', 5.3, 'Ubuntu 24.10 daily development build.', '2024-10', NULL, 0, 1, 'en-US', 'Desktop', 'https://cdimage.ubuntu.com/daily-live/current/oracular-desktop-amd64.iso'),
+(2, 'Ubuntu', '23.10', 'Mantic Minotaur', '64-bit', 5.0, 'Ubuntu 23.10 interim release with GNOME 45.', '2023-10-12', '2024-07', 0, 0, 'en-US', 'Desktop', 'https://releases.ubuntu.com/23.10/ubuntu-23.10-desktop-amd64.iso'),
+
+-- Debian
+(2, 'Debian', '12.7 (Bookworm)', NULL, '64-bit', 4.5, 'Debian 12 stable with full free software.', '2023-06-10', NULL, 1, 1, 'en-US', 'Desktop', 'https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.7.0-amd64-netinst.iso'),
+(2, 'Debian', '12.7 (Bookworm)', NULL, '64-bit', 4.8, 'Debian 12 full DVD install.', '2023-06-10', NULL, 1, 1, 'en-US', 'Full DVD', 'https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/debian-12.7.0-amd64-DVD-1.iso'),
+(2, 'Debian', '12.7 (Bookworm)', NULL, 'ARM64', 3.9, 'Debian 12 ARM64.', '2023-06-10', NULL, 1, 1, 'en-US', 'ARM64', 'https://cdimage.debian.org/cdimage/ports/current/arm64/iso-cd/debian-12.7.0-arm64-netinst.iso'),
+
+-- Fedora Workstation
+(2, 'Fedora', '41', NULL, '64-bit', 2.1, 'Fedora Workstation 41 with GNOME 48.', '2024-11', NULL, 0, 1, 'en-US', 'Workstation', 'https://download.fedoraproject.org/pub/fedora/linux/releases/41/Workstation/x86_64/'),
+(2, 'Fedora', '40', NULL, '64-bit', 2.0, 'Fedora Workstation 40 latest stable.', '2024-04-23', NULL, 0, 1, 'en-US', 'Workstation', 'https://download.fedoraproject.org/pub/fedora/linux/releases/40/Workstation/x86_64/images/Fedora-Workstation-40-1.14-x86_64-netinst.iso'),
+(2, 'Fedora', '40 Server', NULL, '64-bit', 1.8, 'Fedora Server 40.', '2024-04-23', NULL, 0, 1, 'en-US', 'Server', 'https://download.fedoraproject.org/pub/fedora/linux/releases/40/Server/x86_64/images/Fedora-Server-40-1.14-x86_64-netinst.iso'),
+
+-- Linux Mint
+(2, 'Linux Mint', '22 (Wilma)', NULL, '64-bit', 3.2, 'Linux Mint 22 based on Ubuntu 24.04 LTS, Cinnamon edition.', '2024-07-15', '2029', 1, 1, 'en-US', 'Cinnamon', 'https://linuxmint.com/download.php'),
+(2, 'Linux Mint', '22 (Wilma)', NULL, '64-bit', 3.0, 'Linux Mint 22 MATE edition.', '2024-07-15', '2029', 1, 1, 'en-US', 'MATE', 'https://linuxmint.com/download.php'),
+(2, 'Linux Mint', '22 (Wilma)', NULL, '64-bit', 2.9, 'Linux Mint 22 XFCE edition.', '2024-07-15', '2029', 1, 1, 'en-US', 'XFCE', 'https://linuxmint.com/download.php'),
+
+-- Pop!_OS
+(2, 'Pop!_OS', '22.04 LTS', NULL, '64-bit', 3.5, 'Pop!_OS 22.04 LTS NVIDIA/cosmic edition.', '2022-12-13', '2027-04', 1, 1, 'en-US', 'NVIDIA', 'https://pop-planet.info/daily-builds'),
+(2, 'Pop!_OS', '22.04 LTS', NULL, '64-bit', 3.4, 'Pop!_OS 22.04 LTS Intel/AMD.', '2022-12-13', '2027-04', 1, 1, 'en-US', 'Intel/AMD', 'https://pop-planet.info/daily-builds'),
+
+-- Arch Linux
+(2, 'Arch Linux', '2024.10.01', NULL, '64-bit', 0.8, 'Arch Linux minimal install, rolling release.', '2024-10-01', NULL, 0, 1, 'en-US', 'Minimal', 'https://geo.mirror.pkgbuild.com/iso/2024.10.01/archlinux-2024.10.01-x86_64.iso'),
+
+-- Manjaro
+(2, 'Manjaro', '24.0 (Aynsley)', NULL, '64-bit', 4.2, 'Manjaro KDE Plasma latest stable.', '2024-07-10', NULL, 0, 1, 'en-US', 'KDE', 'https://manjaro.org/download/kde/'),
+(2, 'Manjaro', '24.0 (Aynsley)', NULL, '64-bit', 3.9, 'Manjaro GNOME.', '2024-07-10', NULL, 0, 1, 'en-US', 'GNOME', 'https://manjaro.org/download/gnome/'),
+(2, 'Manjaro', '24.0 (Aynsley)', NULL, '64-bit', 3.7, 'Manjaro XFCE.', '2024-07-10', NULL, 0, 1, 'en-US', 'XFCE', 'https://manjaro.org/download/xfce/'),
+
+-- Zorin OS
+(2, 'Zorin OS', '17.3 Core', NULL, '64-bit', 4.1, 'Zorin OS 17.3 Windows-like UI.', '2024-02-22', NULL, 1, 1, 'en-US', 'Core', 'https://zorinos.com/download'),
+(2, 'Zorin OS', '17.3 Lite', NULL, '64-bit', 3.0, 'Zorin OS Lite for older hardware.', '2024-02-22', NULL, 1, 1, 'en-US', 'Lite', 'https://zorinos.com/download'),
+
+-- elementary OS
+(2, 'elementary OS', '8 (Osium)', NULL, '64-bit', 3.1, 'elementary OS 8 macOS-like UI based on Ubuntu 24.04.', '2024-09', NULL, 0, 1, 'en-US', 'Standard', 'https://elementary.io'),
+
+-- openSUSE
+(2, 'openSUSE Leap', '15.6', NULL, '64-bit', 4.6, 'openSUSE Leap 15.6 LTS enterprise stable.', '2024-06-12', NULL, 1, 1, 'en-US', 'Leap', 'https://get.opensuse.org/leap/15.6'),
+(2, 'openSUSE Tumbleweed', 'Rolling', NULL, '64-bit', 4.3, 'openSUSE Tumbleweed rolling release.', 'Daily', NULL, 0, 1, 'en-US', 'Tumbleweed', 'https://get.opensuse.org/tumbleweed'),
+
+-- Kali Linux
+(2, 'Kali Linux', '2024.3', NULL, '64-bit', 3.8, 'Kali Linux penetration testing distro.', '2024-06', NULL, 0, 1, 'en-US', 'Standard', 'https://cdimage.kali.org/kali-2024.3-installer-amd64.iso'),
+
+-- CentOS/Rocky/Alma (RHEL clones)
+(2, 'CentOS Stream', '10', NULL, '64-bit', 10.2, 'CentOS Stream 10 upstream RHEL.', '2024-12', NULL, 1, 1, 'en-US', 'Minimal', 'https://mirror.stream.centos.org/10-stream/BaseOS/x86_64/iso/CentOS-Stream-10-latest-x86_64-dvd1.iso'),
+(2, 'Rocky Linux', '9.4', NULL, '64-bit', 11.1, 'Rocky Linux 9.4 RHEL 9 clone.', '2024-05-27', NULL, 1, 1, 'en-US', 'DVD', 'https://dl.rockylinux.org/pub/rocky/9.4/isos/x86_64/Rocky-9.4-x86_64-dvd.iso'),
+(2, 'AlmaLinux', '9.4', NULL, '64-bit', 11.0, 'AlmaLinux 9.4 RHEL compatible.', '2024-05-21', NULL, 1, 1, 'en-US', 'DVD', 'https://repo.almalinux.org/9.4/isos/x86_64/AlmaLinux-9.4-x86_64-dvd.iso'),
+
+-- macOS
+(3, 'macOS', 'Sequoia 15.1', NULL, 'x86_64', 14.2, 'macOS Sequoia 15.1 latest for Intel Macs.', '2024-10', NULL, 0, 1, 'en-US', 'Full', 'https://swcdn.apple.com/content/downloads/68/04/072-00436-A_Sequoia15.1MacintoshHDX86_64Restore.sparseimage'),
+(3, 'macOS', 'Sequoia 15.1', NULL, 'arm64', 14.1, 'macOS Sequoia 15.1 Apple Silicon.', '2024-10', NULL, 0, 1, 'en-US', 'Apple Silicon', 'https://swcdn.apple.com/content/downloads/68/04/072-00437-A_Sequoia15.1Apple_SiliconRestore.ipsw'),
+(3, 'macOS', 'Sonoma 14.7', NULL, 'x86_64', 13.5, 'macOS Sonoma 14.7 LTS-like stable.', '2024-09', NULL, 1, 1, 'en-US', 'Full', 'https://swcdn.apple.com/content/downloads/03/04/031-74502-A_Sonoma14.7MacintoshIntel_64Restore.sparseimage'),
+(3, 'macOS', 'Sonoma 14.7', NULL, 'arm64', 13.4, 'macOS Sonoma Apple Silicon.', '2024-09', NULL, 1, 1, 'en-US', 'Apple Silicon', 'https://swcdn.apple.com/content/downloads/03/04/031-74503-A_Sonoma14.7Apple_SiliconRestore.ipsw'),
+(3, 'macOS', 'Ventura 13.7', NULL, 'x86_64', 12.3, 'macOS Ventura stable.', '2022-10', NULL, 1, 1, 'en-US', 'Full', 'https://swcdn.apple.com/content/downloads/85/02/041-66248-A_Ventura13.7MacXIntelRestore.sparseimage'),
+
+-- Android-x86 / Other
+(2, 'Android-x86', '9.0-r2', NULL, '64-bit', 1.4, 'Android-x86 PC port.', '2021', NULL, 0, 1, 'en-US', '64-bit', 'https://www.android-x86.org/releases/releasenote-9-0r2.html'),
+(2, 'Chrome OS', 'Flex', NULL, '64-bit', 2.5, 'Chrome OS Flex for PCs.', '2024', NULL, 0, 1, 'en-US', 'Flex', 'https://chromeenterprise.google/os/chromeosflex/'),
 
 (4, 'Microsoft Office', '365', '', '64-bit', 4.7, 'Office 365 perpetual license.', '2024-10-01', NULL, 1, 1, 'Russian', 'Professional Plus', 'https://officecdn.microsoft.com/db/492350F6-3A01-4F97-B9C0-C7C6DDF67D60/media/ru-RU/O365ProPlusRetail.img'),
 (4, 'Microsoft Office', '2024 LTSC', '', '64-bit', 4.5, 'Office LTSC 2024 perpetual license.', '2024-10-01', NULL, 1, 1, 'English', 'Professional Plus', 'https://www.microsoft.com/en-us/microsoft-365/enterprise/office'),
