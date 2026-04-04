@@ -53,54 +53,65 @@ async function init() {
 
 async function loadDatabase() {
     const response = await fetch('complete-database.sql');
-    const sql = await response.text();
+    let sql = await response.text();
+    sql = sql.replace(/^\uFEFF/, '');
+
     osFamilies = parseFamilies(sql);
     osDatabase = parseOperatingSystems(sql);
+
+    osDatabase.forEach(os => {
+        const family = osFamilies.find(f => f.id === os.family_id);
+        os.family = family ? family.name : 'Unknown';
+        os.familyIcon = family ? family.icon : '?';
+    });
+
     console.log(`Parsed ${osFamilies.length} families, ${osDatabase.length} OS entries`);
 }
 
 function parseFamilies(sql) {
     const families = [];
-    const match = /INSERT INTO os_families.*?VALUES\s*(.*?);/s.exec(sql);
-    if (!match) return families;
-
-    const rows = extractValues(match[1]);
-    rows.forEach(row => {
-        const vals = parseRowValues(row);
-        if (vals.length >= 3) {
-            families.push({ id: vals[0], name: vals[1], icon: vals[2] });
-        }
-    });
+    const regex = /INSERT INTO os_families.*?VALUES\s*(.*?);/gs;
+    let match;
+    while ((match = regex.exec(sql)) !== null) {
+        const rows = extractValues(match[1]);
+        rows.forEach(row => {
+            const vals = parseRowValues(row);
+            if (vals.length >= 3) {
+                families.push({ id: vals[0], name: vals[1], icon: vals[2] });
+            }
+        });
+    }
     return families;
 }
 
 function parseOperatingSystems(sql) {
     const entries = [];
-    const match = /INSERT INTO operating_systems.*?VALUES\s*(.*?);/s.exec(sql);
-    if (!match) return entries;
-
-    const rows = extractValues(match[1]);
-    rows.forEach(row => {
-        const vals = parseRowValues(row);
-        if (vals.length >= 15) {
-            entries.push({
-                family_id: vals[0],
-                name: vals[2],
-                version: vals[3],
-                codename: vals[4] || null,
-                architecture: vals[5] || '64-bit',
-                size_gb: parseFloat(vals[6]) || 0,
-                description: vals[7] || '',
-                release_date: vals[8] || null,
-                eos_date: vals[9] || null,
-                is_lts: parseInt(vals[10]) || 0,
-                is_supported: parseInt(vals[11]) !== 0,
-                language: vals[12] || 'English',
-                edition: vals[13] || 'Standard',
-                download_url: vals[14] || ''
-            });
-        }
-    });
+    const regex = /INSERT INTO operating_systems.*?VALUES\s*(.*?);/gs;
+    let match;
+    while ((match = regex.exec(sql)) !== null) {
+        const rows = extractValues(match[1]);
+        rows.forEach(row => {
+            const vals = parseRowValues(row);
+            if (vals.length >= 15) {
+                entries.push({
+                    family_id: vals[0],
+                    name: vals[2],
+                    version: vals[3],
+                    codename: vals[4] || null,
+                    architecture: vals[5] || '64-bit',
+                    size_gb: parseFloat(vals[6]) || 0,
+                    description: vals[7] || '',
+                    release_date: vals[8] || null,
+                    eos_date: vals[9] || null,
+                    is_lts: parseInt(vals[10]) || 0,
+                    is_supported: parseInt(vals[11]) !== 0,
+                    language: vals[12] || 'English',
+                    edition: vals[13] || 'Standard',
+                    download_url: vals[14] || ''
+                });
+            }
+        });
+    }
     return entries;
 }
 
