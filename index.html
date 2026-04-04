@@ -120,25 +120,8 @@
                     <span class="before:[counter-increment:stage] before:content-[counter(stage)] mb-2 inline-flex h-12 w-12 items-center justify-center rounded-full bg-amethyst-50 text-2xl font-bold text-amethyst-500 md:mb-4 md:h-16 md:w-16 md:text-3xl"></span>
                     <h2 class="mb-8 text-2xl font-bold text-amethyst-800 md:text-3xl" id="family-title">Family</h2>
                     <div id="family-options">
-                        <ul>
-                            <li class="mb-3 last:mb-0">
-                                <label class="group flex cursor-pointer items-center space-x-2 rounded-2xl border-2 border-amethyst-300 p-4 text-lg font-medium text-amethyst-500 hover:border-amethyst-800 aria-selected:border-amethyst-400 aria-selected:bg-amethyst-50 [&[aria-selected]]:hover:border-amethyst-800" aria-selected="false" for="item-OsFamily-Windows">
-                                    <input id="item-OsFamily-Windows" class="appearance-none border-2 border-amethyst-200 checked:border-amethyst-300 checked:bg-amethyst-500 group-hover:border-amethyst-800" type="radio" aria-label="Windows" name="item-OsFamily" value="Windows">
-                                    <span class="inline-flex text-2xl md:text-3xl"><i class="fab fa-microsoft"></i></span>
-                                    <span class="flex w-full items-center justify-between text-lg md:text-xl">
-                                        <span class="flex flex-col items-start"><span>Windows</span></span>
-                                    </span>
-                                </label>
-                            </li>
-                            <li class="mb-3 last:mb-0">
-                                <label class="group flex cursor-pointer items-center space-x-2 rounded-2xl border-2 border-amethyst-300 p-4 text-lg font-medium text-amethyst-500 hover:border-amethyst-800 aria-selected:border-amethyst-400 aria-selected:bg-amethyst-50 [&[aria-selected]]:hover:border-amethyst-800" aria-selected="false" for="item-OsFamily-Linux">
-                                    <input id="item-OsFamily-Linux" class="appearance-none border-2 border-amethyst-200 checked:border-amethyst-300 checked:bg-amethyst-500 group-hover:border-amethyst-800" type="radio" aria-label="Linux" name="item-OsFamily" value="Linux">
-                                    <span class="inline-flex text-2xl md:text-3xl"><i class="fab fa-linux"></i></span>
-                                    <span class="flex w-full items-center justify-between text-lg md:text-xl">
-                                        <span class="flex flex-col items-start"><span>Linux</span></span>
-                                    </span>
-                                </label>
-                            </li>
+                        <ul id="family-list-container">
+                            <!-- Populated by JS from database -->
                         </ul>
                     </div>
                 </li>
