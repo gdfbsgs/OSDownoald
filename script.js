@@ -430,6 +430,14 @@ function updateIsoCount(count) {
     if (footerCount) footerCount.textContent = count;
 }
 
-document.addEventListener('DOMContentLoaded', init);
+if (document.readyState === 'loading') {
+    if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
+} else {
+    init();
+}
 
 window.OSClick = { osDatabase, osFamilies, currentStage, selectedOs };
