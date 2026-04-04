@@ -126,9 +126,9 @@ function transformData(families, osList) {
 
 // Setup all event listeners
 function setupEventListeners() {
-    // Family radios
-    document.querySelectorAll('input[name="family"]').forEach(radio => {
-        radio.addEventListener('change', handleFamilySelect);
+// Type radios (1st selector: Operating Systems/Software/Other)
+    document.querySelectorAll('input[name="type"]').forEach(radio => {
+        radio.addEventListener('change', handleTypeSelect);
     });
     
     // Copy checksum
@@ -144,6 +144,52 @@ function setupEventListeners() {
 }
 
 // Family selection handler
+function handleTypeSelect(e) {
+    const type = e.target.value;
+    NProgress.start();
+    
+    setTimeout(() => {
+        currentStage = 'OsFamily';
+        updateWizard();
+        
+        // Map type to families
+        const familyMap = {
+            'Operating Systems': ['Windows', 'Linux', 'macOS'],
+            'Software': ['Software'],
+            'Other': ['Software']
+        };
+        populateFamilyOptions(familyMap[type] || ['Windows', 'Linux', 'macOS']);
+        NProgress.done();
+    }, 600);
+}
+
+function populateFamilyOptions(families) {
+    osStage.querySelector('h2').textContent = 'Choose OS Family';
+    osStage.querySelector('p').textContent = 'Pick your operating system family';
+    
+    osOptionsEl.innerHTML = families.map(family => `
+        <label class="os-radio w-full group cursor-pointer p-6 rounded-2xl border-2 border-transparent hover:border-emerald-500/50 bg-white/5 backdrop-blur-sm transition-all hover:shadow-xl hover:scale-[1.01] block">
+            <input type="radio" name="family" value="${family}" class="sr-only" required data-family="${family}">
+            <div class="flex items-center gap-4">
+                <div class="w-14 h-14 ${family === 'Windows' ? 'bg-gradient-to-br from-blue-500 to-blue-600' : family === 'Linux' ? 'bg-gradient-to-br from-emerald-500 to-teal-600' : family === 'macOS' ? 'bg-gradient-to-br from-gray-500 to-gray-600' : 'bg-gradient-to-br from-amber-500 to-orange-600'} rounded-xl flex items-center justify-center shadow-xl flex-shrink-0">
+                    <span class="text-2xl">${family === 'Windows' ? '🪟' : family === 'Linux' ? '🐧' : family === 'macOS' ? '🍎' : '💻'}</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xl font-bold text-white truncate group-hover:text-emerald-300">${family}</div>
+                    <div class="text-slate-400 text-sm mt-1 flex items-center gap-2">
+                        <i class="fas fa-check-circle text-emerald-400"></i>
+                        Multiple versions available
+                    </div>
+                </div>
+            </div>
+        </label>
+    `).join('');
+    
+    osOptionsEl.querySelectorAll('input[name="family"]').forEach(radio => {
+        radio.addEventListener('change', handleFamilySelect);
+    });
+}
+
 function handleFamilySelect(e) {
     const family = e.target.value;
     NProgress.start();
@@ -151,10 +197,7 @@ function handleFamilySelect(e) {
     setTimeout(() => {
         currentStage = 'Os';
         updateWizard();
-        
-        // Populate OS options for family
         populateOsOptions(family);
-        
         NProgress.done();
     }, 600);
 }

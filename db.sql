@@ -1,5 +1,5 @@
 -- COMPLETE OS DATABASE: All Windows Versions/Builds/Editions/Languages + Full OS Collection
--- AUTO-GENERATED: 2026-04-03
+-- AUTO-GENERATED: 2026-04-04
 -- Total entries: 6021
 -- Compatible with script.js parser.
 
