@@ -202,8 +202,6 @@ function cleanValue(v) {
 }
 
 function getFamilyIcon(familyName) {
-    const family = osFamilies.find(f => f.name === familyName);
-    if (family && family.icon) return family.icon;
     return FAMILY_ICONS[familyName] || 'fas fa-circle-question';
 }
 
