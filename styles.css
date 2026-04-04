@@ -1,7 +1,6 @@
-/* OS.click Custom Styles - Amethyst Purple Theme */
-/* TailwindCSS already loaded via CDN in index.html */
+/* OS.click Custom Styles - Amethyst Purple Theme (Light) */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&display=swap');
 
 * {
     margin: 0;
@@ -10,28 +9,29 @@
 }
 
 body {
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
     line-height: 1.6;
     overscroll-behavior: none;
 }
 
+/* NProgress */
 #nprogress .bar {
-    background: linear-gradient(90deg, #a855f7, #c084fc, #a855f7);
-    height: 3px !important;
-    box-shadow: 0 0 10px #a855f7;
+    background: #29d;
+    height: 2px !important;
 }
 
 #nprogress .peg {
-    box-shadow: 0 0 10px #a855f7, 0 0 5px #a855f7;
+    box-shadow: 0 0 10px #29d, 0 0 5px #29d;
 }
 
-/* Custom purple palette overrides */
-.bg-gradient-to-br.from-slate-950.via-purple-950.to-slate-950 {
-    background: linear-gradient(to bottom right, #0f0f23 0%, #1e1b4b 50%, #0f0f23 100%);
+/* Stage counter */
+#start {
+    counter-reset: stage;
 }
 
-.max-w-7xl {
-    max-width: 80rem;
+#start [data-stage]::before {
+    counter-increment: stage;
+    content: counter(stage);
 }
 
 /* Wizard stages */
@@ -39,107 +39,41 @@ body {
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#start > li:not([data-current="true"]) {
-    opacity: 0.3;
-    transform: translateX(20px);
-}
-
-#start li[data-current="true"] {
-    opacity: 1 !important;
-    transform: translateX(0) !important;
-}
-
-/* OS Radio Cards */
-.os-radio {
+/* Radio card labels */
+label.group {
+    position: relative;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.os-radio:hover {
-    transform: scale(1.02) !important;
-    border-color: rgb(168 85 247 / 0.5) !important;
-    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 10px 10px -5px rgb(0 0 0 / 0.2), 0 0 0 1px rgb(168 85 247 / 0.2) !important;
+label.group:hover {
+    transform: scale(1.01);
 }
 
-.os-radio input:checked + div {
-    border-color: #a855f7 !important;
-    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(139, 92, 246, 0.1)) !important;
-    box-shadow: 0 10px 15px -3px rgb(168 85 247 / 0.3), 0 0 0 1px rgb(168 85 247 / 0.3) !important;
+label.group input[type="radio"]:checked ~ span:first-of-type,
+label.group[aria-selected="true"] {
+    border-color: #8b5cf6 !important;
+    background: #f5f3ff !important;
 }
 
-.os-radio input:checked + div::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 1.5rem;
-    padding: 2px;
-    background: linear-gradient(135deg, #a855f7, #c084fc, transparent, transparent);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    animation: checkmark 0.4s ease forwards;
+/* Hide elements */
+.hidden,
+[style*="display: none"] {
+    display: none !important;
 }
 
-@keyframes checkmark {
-    to { opacity: 1; }
-}
-
-/* Stage transitions */
-#start li[data-stage="Os"].scale-95 {
-    transform: scale(0.95) translateX(50px) !important;
-}
-
-#start li[data-stage="Download"].scale-95 {
-    transform: scale(0.95) translateX(100px) !important;
-}
-
-/* Popular buttons */
-.popular-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    min-width: 100px;
-    text-decoration: none;
-}
-
-.popular-btn:hover {
-    background: rgba(168, 85, 247, 0.15);
-    border-color: rgba(168, 85, 247, 0.3);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 10px 10px -5px rgb(0 0 0 / 0.2);
-}
-
-/* Download panel enhancements */
-#selected-os-info {
-    background: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(20px);
-}
-
-#checksum {
-    background: rgba(0, 0, 0, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    font-family: 'JetBrains Mono', 'Roboto Mono', monospace !important;
-}
-
-#copy-checksum:hover {
-    transform: scale(1.05);
-}
-
+/* Download link */
 #download-link {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #download-link:hover {
-    transform: scale(1.05) !important;
-    box-shadow: 0 25px 50px -12px rgb(16 185 129 / 0.5) !important;
+    transform: scale(1.02);
+    box-shadow: 0 25px 50px -12px rgb(16 185 129 / 0.5);
+}
+
+/* Copy button */
+#copy-checksum:hover {
+    transform: scale(1.05);
 }
 
 /* Screen reader only */
@@ -155,69 +89,61 @@ body {
     border-width: 0;
 }
 
-/* Lang toggle */
-#lang-toggle {
-    backdrop-filter: blur(20px);
-}
-
-#lang-toggle:hover {
-    background: rgba(168, 85, 247, 0.2) !important;
-    transform: rotate(90deg);
-}
-
-/* Responsive tweaks */
-@media (max-width: 768px) {
-    .popular-btn {
-        min-width: 80px;
-        padding: 0.75rem;
-    }
-    
-    .popular-btn span:first-child {
-        font-size: 1.25rem !important;
-    }
-    
-    #start > li {
-        padding: 2rem 1.5rem !important;
-    }
-    
-    .os-radio {
-        padding: 1.25rem !important;
-    }
-}
-
 /* Custom scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(15, 15, 35, 0.5);
+    background: #f5f3ff;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #a855f7, #c084fc);
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #9333ea, #b794f4);
+    background: linear-gradient(135deg, #7c3aed, #c4b5fd);
 }
 
-/* Focus styles for accessibility */
-.os-radio:focus-within,
-.popular-btn:focus,
-#download-link:focus-visible {
-    outline: 2px solid #a855f7;
+/* Focus styles */
+label.group:focus-within {
+    outline: 2px solid #8b5cf6;
     outline-offset: 2px;
 }
 
-/* Animations */
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+/* Popular OS links in header/footer */
+#popular-os-links li,
+#footer-popular-os-links li {
+    display: inline-block;
 }
 
-.popular-btn:nth-child(1):hover span:first-child { animation: float 1s ease-in-out infinite; }
-.popular-btn:nth-child(2):hover span:first-child { animation: float 1s ease-in-out infinite 0.1s; }
-.popular-btn:nth-child(3):hover span:first-child { animation: float 1s ease-in-out infinite 0.2s; }
-.popular-btn:nth-child(4):hover span:first-child { animation: float 1s ease-in-out infinite 0.3s; }
+#popular-os-links a,
+#footer-popular-os-links a {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    background-color: #5b21b6;
+    color: white;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+#popular-os-links a:hover,
+#footer-popular-os-links a:hover {
+    background-color: white;
+    color: #8b5cf6;
+}
+
+/* Mobile menu */
+#navbar-default {
+    transition: all 0.3s;
+}
+
+/* Smooth scroll */
+html {
+    scroll-behavior: smooth;
+}

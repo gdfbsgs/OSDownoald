@@ -1,25 +1,17 @@
 // OS.click Wizard Logic
-// Parses SQL → Inertia props → Wizard state machine → Download panel
+// Parses SQL -> Inertia props -> Wizard state machine -> Download panel
 
-// Globals
 let osDatabase = [];
 let currentStage = 'OsFamily';
 let selectedOs = null;
 let NProgress = window.NProgress;
 
-// DOM Elements
 const appEl = document.getElementById('app');
 const startEl = document.getElementById('start');
-const osOptionsEl = document.getElementById('os-options');
-const downloadEl = document.getElementById('download');
-
-// Stage elements
-const familyStage = document.querySelector('[data-stage="OsFamily"]');
 const osStage = document.querySelector('[data-stage="Os"]');
 const downloadStage = document.querySelector('[data-stage="Download"]');
+const osListContainer = document.getElementById('os-list-container');
 
-// Download panel elements
-const selectedIconEl = document.getElementById('selected-os-icon');
 const selectedNameEl = document.getElementById('selected-os-name');
 const selectedVersionEl = document.getElementById('selected-os-version');
 const isoSizeEl = document.getElementById('iso-size');
@@ -31,25 +23,20 @@ const downloadLinkEl = document.getElementById('download-link');
 const copyChecksumBtn = document.getElementById('copy-checksum');
 const newSearchBtn = document.getElementById('new-search');
 
-// Init
 async function init() {
     NProgress.configure({ showSpinner: false });
     NProgress.start();
     
     try {
-        // Parse Inertia data-page
         const pageData = JSON.parse(appEl.dataset.page);
-        console.log('OS.click loaded:', pageData.isoCount, 'ISOs');
+        console.log('OS.click loaded:', pageData.props.isoCount, 'ISOs');
         
-        // Load & parse database
         await loadDatabase();
-        
-        // Setup event listeners
         setupEventListeners();
+        setupPopularLinks(pageData.props.popularOs);
+        updateIsoCount(pageData.props.isoCount);
         
-        // Setup popular links
-        setupPopularLinks();
-        
+        console.log('OS.click ready!');
         NProgress.done();
     } catch (error) {
         console.error('Init failed:', error);
@@ -57,7 +44,6 @@ async function init() {
     }
 }
 
-// Load and parse SQL database
 async function loadDatabase() {
     const response = await fetch('complete-database.sql');
     const sql = await response.text();
@@ -66,12 +52,10 @@ async function loadDatabase() {
     console.log(`Parsed ${osDatabase.length} OS entries`);
 }
 
-// Simplified SQL parser (from original)
 function parseSQL(sql) {
     const osFamilies = [];
     const operatingSystems = [];
     
-    // Families
     const familyRegex = /INSERT INTO os_families.*?VALUES\s*(.*?);/s;
     const familyMatch = familyRegex.exec(sql);
     if (familyMatch) {
@@ -82,12 +66,11 @@ function parseSQL(sql) {
         });
     }
     
-    // OS entries (first 1000 for perf)
     const osRegex = /INSERT INTO operating_systems.*?VALUES\s*(.*?);/s;
     const osMatch = osRegex.exec(sql);
     if (osMatch) {
         const rows = osMatch[1].match(/\([^)]+\)/g) || [];
-        rows.slice(0, 1000).forEach(row => {  // Limit for perf
+        rows.slice(0, 1000).forEach(row => {
             const values = row.slice(1, -1).split(',').map(v => {
                 v = v.trim();
                 if ((v.startsWith("'") && v.endsWith("'")) || (v.startsWith('"') && v.endsWith('"')))
@@ -110,7 +93,6 @@ function parseSQL(sql) {
     return { osFamilies, operatingSystems };
 }
 
-// Transform data
 function transformData(families, osList) {
     const familyMap = {};
     families.forEach(f => familyMap[f.id] = f);
@@ -118,126 +100,75 @@ function transformData(families, osList) {
     return osList.map(os => ({
         ...os,
         family: familyMap[os.family_id]?.name || 'Unknown',
-        familyIcon: familyMap[os.family_id]?.icon || '❓',
+        familyIcon: familyMap[os.family_id]?.icon || '?',
         size: os.size_gb ? `${os.size_gb.toFixed(1)} GB` : 'Unknown',
         fullName: `${os.name} ${os.version}`
     }));
 }
 
-// Setup all event listeners
 function setupEventListeners() {
-// Type radios (1st selector: Operating Systems/Software/Other)
-    document.querySelectorAll('input[name="type"]').forEach(radio => {
-        radio.addEventListener('change', handleTypeSelect);
-    });
-    
-    // Copy checksum
-    copyChecksumBtn.addEventListener('click', copyChecksum);
-    
-    // New search
-    newSearchBtn.addEventListener('click', resetWizard);
-    
-    // Lang toggle (placeholder)
-    document.getElementById('lang-toggle')?.addEventListener('click', () => {
-        alert('Language switcher coming soon!');
-    });
-}
-
-// Family selection handler
-function handleTypeSelect(e) {
-    const type = e.target.value;
-    NProgress.start();
-    
-    setTimeout(() => {
-        currentStage = 'OsFamily';
-        updateWizard();
-        
-        // Map type to families
-        const familyMap = {
-            'Operating Systems': ['Windows', 'Linux', 'macOS'],
-            'Software': ['Software'],
-            'Other': ['Software']
-        };
-        populateFamilyOptions(familyMap[type] || ['Windows', 'Linux', 'macOS']);
-        NProgress.done();
-    }, 600);
-}
-
-function populateFamilyOptions(families) {
-    osStage.querySelector('h2').textContent = 'Choose OS Family';
-    osStage.querySelector('p').textContent = 'Pick your operating system family';
-    
-    osOptionsEl.innerHTML = families.map(family => `
-        <label class="os-radio w-full group cursor-pointer p-6 rounded-2xl border-2 border-transparent hover:border-emerald-500/50 bg-white/5 backdrop-blur-sm transition-all hover:shadow-xl hover:scale-[1.01] block">
-            <input type="radio" name="family" value="${family}" class="sr-only" required data-family="${family}">
-            <div class="flex items-center gap-4">
-                <div class="w-14 h-14 ${family === 'Windows' ? 'bg-gradient-to-br from-blue-500 to-blue-600' : family === 'Linux' ? 'bg-gradient-to-br from-emerald-500 to-teal-600' : family === 'macOS' ? 'bg-gradient-to-br from-gray-500 to-gray-600' : 'bg-gradient-to-br from-amber-500 to-orange-600'} rounded-xl flex items-center justify-center shadow-xl flex-shrink-0">
-                    <span class="text-2xl">${family === 'Windows' ? '🪟' : family === 'Linux' ? '🐧' : family === 'macOS' ? '🍎' : '💻'}</span>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xl font-bold text-white truncate group-hover:text-emerald-300">${family}</div>
-                    <div class="text-slate-400 text-sm mt-1 flex items-center gap-2">
-                        <i class="fas fa-check-circle text-emerald-400"></i>
-                        Multiple versions available
-                    </div>
-                </div>
-            </div>
-        </label>
-    `).join('');
-    
-    osOptionsEl.querySelectorAll('input[name="family"]').forEach(radio => {
+    document.querySelectorAll('input[name="item-OsFamily"]').forEach(radio => {
         radio.addEventListener('change', handleFamilySelect);
     });
+    
+    if (copyChecksumBtn) copyChecksumBtn.addEventListener('click', copyChecksum);
+    if (newSearchBtn) newSearchBtn.addEventListener('click', resetWizard);
+    
+    const heroBtn = document.getElementById('hero-get-iso-btn');
+    if (heroBtn) heroBtn.addEventListener('click', scrollToWizard);
+    
+    const footerBtn = document.getElementById('footer-get-iso-btn');
+    if (footerBtn) footerBtn.addEventListener('click', scrollToWizard);
+}
+
+function scrollToWizard() {
+    startEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function handleFamilySelect(e) {
     const family = e.target.value;
     NProgress.start();
     
+    document.querySelectorAll('input[name="item-OsFamily"]').forEach(r => {
+        r.closest('li').setAttribute('aria-selected', r === e.target ? 'true' : 'false');
+    });
+    
     setTimeout(() => {
         currentStage = 'Os';
         updateWizard();
         populateOsOptions(family);
         NProgress.done();
-    }, 600);
+    }, 400);
 }
 
-// Populate OS stage with family options
 function populateOsOptions(family) {
     const familyOs = osDatabase.filter(os => os.family === family);
-    const uniqueOs = [...new Set(familyOs.map(os => os.fullName))].slice(0, 12);
+    const uniqueOs = [...new Set(familyOs.map(os => os.fullName))].slice(0, 15);
     
-    osOptionsEl.innerHTML = uniqueOs.map(osName => `
-        <label class="os-radio w-full group cursor-pointer p-6 rounded-2xl border-2 border-transparent hover:border-emerald-500/50 bg-white/5 backdrop-blur-sm transition-all hover:shadow-xl hover:scale-[1.01] block">
-            <input type="radio" name="os" value="${osName}" class="sr-only" required data-os-name="${osName}">
-            <div class="flex items-center gap-4">
-                <div class="w-14 h-14 ${family === 'Windows' ? 'bg-gradient-to-br from-blue-500 to-blue-600' : family === 'Linux' ? 'bg-gradient-to-br from-emerald-500 to-teal-600' : 'bg-gradient-to-br from-gray-500 to-gray-600'} rounded-xl flex items-center justify-center shadow-xl flex-shrink-0">
-                    <span class="text-2xl">${family === 'Windows' ? '🪟' : family === 'Linux' ? '🐧' : '🍎'}</span>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xl font-bold text-white truncate group-hover:text-emerald-300">${osName}</div>
-                    <div class="text-slate-400 text-sm mt-1 flex items-center gap-2">
-                        <i class="fas fa-check-circle text-emerald-400"></i>
-                        ${Math.min(familyOs.filter(f => f.fullName === osName).length, 99)}+ editions available
-                    </div>
-                </div>
-            </div>
-        </label>
+    const iconClass = family === 'Windows' ? 'fa-microsoft' : 'fa-linux';
+    
+    osListContainer.innerHTML = uniqueOs.map(osName => `
+        <li class="mb-3 last:mb-0">
+            <label class="group flex cursor-pointer items-center space-x-2 rounded-2xl border-2 border-amethyst-300 p-4 text-lg font-medium text-amethyst-500 hover:border-amethyst-800 aria-selected:border-amethyst-400 aria-selected:bg-amethyst-50 [&[aria-selected]]:hover:border-amethyst-800" aria-selected="false">
+                <input type="radio" name="item-Os" value="${osName}" class="appearance-none border-2 border-amethyst-200 checked:border-amethyst-300 checked:bg-amethyst-500 group-hover:border-amethyst-800" required>
+                <span class="inline-flex text-2xl md:text-3xl"><i class="fab ${iconClass}"></i></span>
+                <span class="flex w-full items-center justify-between text-lg md:text-xl">
+                    <span class="flex flex-col items-start"><span>${osName}</span></span>
+                </span>
+            </label>
+        </li>
     `).join('');
     
-    // OS radio handlers
-    osOptionsEl.querySelectorAll('input[name="os"]').forEach(radio => {
+    osListContainer.querySelectorAll('input[name="item-Os"]').forEach(radio => {
         radio.addEventListener('change', handleOsSelect);
     });
 }
 
-// OS selection handler
 function handleOsSelect(e) {
-    const osName = e.target.dataset.osName;
+    const osName = e.target.value;
     NProgress.start();
     
     setTimeout(() => {
-        // Find best matching OS (English Pro 64-bit preferred)
         const matches = osDatabase.filter(os => os.fullName === osName);
         selectedOs = matches.find(os => 
             os.language === 'English' && 
@@ -250,34 +181,35 @@ function handleOsSelect(e) {
         populateDownloadPanel();
         
         NProgress.done();
-    }, 800);
+    }, 600);
 }
 
-// Update wizard UI state
 function updateWizard() {
-    const stages = ['OsFamily', 'Os', 'Download'];
-    stages.forEach((stage, index) => {
-        const el = document.querySelector(`[data-stage="${stage}"]`);
+    const osFamilyStage = document.querySelector('[data-stage="OsFamily"]');
+    
+    [osFamilyStage, osStage, downloadStage].forEach(el => {
+        if (!el) return;
+        const stage = el.dataset.stage;
         const isCurrent = stage === currentStage;
         
-        el.classList.toggle('hidden', !isCurrent);
-        el.classList.toggle('scale-95', !isCurrent);
-        el.classList.toggle('opacity-0', !isCurrent);
-        el.classList.toggle('invisible', !isCurrent);
-        
         if (isCurrent) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            startEl.dataset.current = stage;
+            el.style.display = '';
+            el.dataset.current = 'true';
+        } else {
+            el.style.display = 'none';
+            el.dataset.current = 'false';
         }
     });
+    
+    if (currentStage === 'Os' || currentStage === 'Download') {
+        osStage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    
+    NProgress.done();
 }
 
-// Populate download panel
 function populateDownloadPanel() {
     if (!selectedOs) return;
-    
-    selectedIconEl.innerHTML = `<span class="text-2xl">${selectedOs.familyIcon}</span>`;
-    selectedIconEl.className = `w-16 h-16 ${selectedOs.family === 'Windows' ? 'bg-gradient-to-br from-blue-500 to-blue-600' : 'bg-gradient-to-br from-emerald-500 to-teal-600'} rounded-xl flex items-center justify-center shadow-xl`;
     
     selectedNameEl.textContent = selectedOs.name;
     selectedVersionEl.textContent = selectedOs.version;
@@ -286,72 +218,84 @@ function populateDownloadPanel() {
     isoLangEl.textContent = selectedOs.language;
     isoEditionEl.textContent = selectedOs.edition;
     
-    // Mock SHA256 (in production: compute from file or API)
-    checksumEl.value = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
+    checksumEl.textContent = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
     
     downloadLinkEl.href = selectedOs.download_url || '#';
-    downloadLinkEl.querySelector('span:last-child').textContent = `Download ISO (${selectedOs.size})`;
+    
+    downloadStage.style.display = '';
+    downloadStage.dataset.current = 'true';
 }
 
-// Copy checksum
 function copyChecksum() {
-    checksumEl.select();
-    checksumEl.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(checksumEl.value).then(() => {
+    const text = checksumEl.textContent;
+    navigator.clipboard.writeText(text).then(() => {
         const original = copyChecksumBtn.innerHTML;
-        copyChecksumBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Copied!';
-        copyChecksumBtn.classList.add('bg-green-500');
+        copyChecksumBtn.innerHTML = '<i class="fas fa-check"></i>';
         setTimeout(() => {
             copyChecksumBtn.innerHTML = original;
-            copyChecksumBtn.classList.remove('bg-green-500');
         }, 1500);
     });
 }
 
-// Reset wizard
 function resetWizard() {
     NProgress.start();
     currentStage = 'OsFamily';
     selectedOs = null;
+    
+    document.querySelectorAll('input[name="item-OsFamily"]').forEach(r => r.checked = false);
+    
     setTimeout(() => {
         updateWizard();
+        startEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         NProgress.done();
     }, 300);
 }
 
-// Setup popular quick links
-function setupPopularLinks() {
-    document.querySelectorAll('.popular-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+function setupPopularLinks(popularOs) {
+    const headerList = document.getElementById('popular-os-links');
+    const footerList = document.getElementById('footer-popular-os-links');
+    
+    if (!headerList || !footerList) return;
+    
+    const html = popularOs.map(os => {
+        const url = `/en/${os.family}:${os.name.replace(/\s+/g, '_')}`;
+        return `<li class="inline-block"><a class="mb-2 mr-2 block rounded-full bg-amethyst-800 px-5 py-2 text-white hover:bg-white hover:text-amethyst-500 focus:outline-none focus:ring-2 focus:ring-amethyst-300" href="#" data-family="${os.family}" data-os="${os.name}">${os.name}</a></li>`;
+    }).join('');
+    
+    headerList.innerHTML = html;
+    footerList.innerHTML = html;
+    
+    document.querySelectorAll('#popular-os-links a, #footer-popular-os-links a').forEach(link => {
+        link.addEventListener('click', (e) => {
             e.preventDefault();
-            const osName = btn.dataset.os;
+            const family = link.dataset.family;
+            const osName = link.dataset.os;
             
-            // Simulate family selection (Windows/Ubuntu)
-            const family = osName.includes('Windows') ? 'Windows' : 
-                          osName.includes('Ubuntu') ? 'Linux' : 'Linux';
-            
-            // Trigger family radio
-            const familyRadio = document.querySelector(`input[value="${family}"]`);
+            const familyRadio = document.querySelector(`input[name="item-OsFamily"][value="${family}"]`);
             if (familyRadio) {
                 familyRadio.checked = true;
                 familyRadio.dispatchEvent(new Event('change', { bubbles: true }));
                 
                 setTimeout(() => {
-                    // Then trigger specific OS
-                    const osRadio = Array.from(osOptionsEl.querySelectorAll('input[name="os"]'))
-                        .find(r => r.dataset.osName === osName);
+                    const osRadio = Array.from(osListContainer.querySelectorAll('input[name="item-Os"]'))
+                        .find(r => r.value === osName);
                     if (osRadio) {
                         osRadio.checked = true;
                         osRadio.dispatchEvent(new Event('change', { bubbles: true }));
                     }
-                }, 700);
+                }, 500);
             }
         });
     });
 }
 
-// Start app
-init();
+function updateIsoCount(count) {
+    const heroCount = document.getElementById('iso-count-hero');
+    const footerCount = document.getElementById('iso-count-footer');
+    if (heroCount) heroCount.textContent = count;
+    if (footerCount) footerCount.textContent = count;
+}
 
-// Export for debugging
+document.addEventListener('DOMContentLoaded', init);
+
 window.OSClick = { osDatabase, currentStage, selectedOs };
