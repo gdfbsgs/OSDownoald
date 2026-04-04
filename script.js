@@ -32,14 +32,29 @@ const FAMILY_ICONS = {
     'Software': 'fas fa-laptop-code'
 };
 
+const DEFAULT_FAMILIES = [
+    { id: '1', name: 'Windows', icon: '🪟' },
+    { id: '2', name: 'Linux', icon: '🐧' },
+    { id: '3', name: 'macOS', icon: '🍎' },
+    { id: '4', name: 'Software', icon: '💻' }
+];
+
 async function init() {
     NProgress.configure({ showSpinner: false });
     NProgress.start();
 
     try {
         const pageData = JSON.parse(appEl.dataset.page);
-        await loadDatabase();
+
+        osFamilies = [...DEFAULT_FAMILIES];
         populateFamilyOptions();
+
+        try {
+            await loadDatabase();
+        } catch (dbError) {
+            console.warn('DB load failed, using defaults:', dbError.message);
+        }
+
         setupEventListeners();
         setupPopularLinks(pageData.props.popularOs);
         updateIsoCount(pageData.props.isoCount);
@@ -53,18 +68,22 @@ async function init() {
 
 async function loadDatabase() {
     const response = await fetch('complete-database.sql');
+    if (!response.ok) throw new Error('HTTP ' + response.status);
     let sql = await response.text();
     sql = sql.replace(/^\uFEFF/, '');
 
-    osFamilies = parseFamilies(sql);
+    const families = parseFamilies(sql);
+    if (families.length > 0) osFamilies = families;
+
     osDatabase = parseOperatingSystems(sql);
 
     osDatabase.forEach(os => {
-        const family = osFamilies.find(f => f.id === os.family_id);
+        const family = osFamilies.find(f => f.id == os.family_id);
         os.family = family ? family.name : 'Unknown';
         os.familyIcon = family ? family.icon : '?';
     });
 
+    populateFamilyOptions();
     console.log(`Parsed ${osFamilies.length} families, ${osDatabase.length} OS entries`);
 }
 
