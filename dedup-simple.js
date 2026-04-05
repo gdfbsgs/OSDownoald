@@ -1,37 +1,44 @@
 const fs = require('fs');
 
-const data = fs.readFileSync('complete-database.sql', 'utf8');
-const lines = data.split('\n');
+const sql = fs.readFileSync('complete-database.sql', 'utf8');
+const lines = sql.split('\n');
+
 const seen = new Set();
-const uniqueLines = [];
+const output = [];
+let inInsertBlock = false;
 
-let insertStart = false;
+for (let i = 0; i < lines.length; i++) {
+  const trimmed = lines[i].trim();
 
-for (const line of lines) {
-  const trimmed = line.trim();
   if (trimmed.startsWith('INSERT INTO operating_systems')) {
-    insertStart = true;
-    uniqueLines.push(line);
+    inInsertBlock = true;
+    output.push(lines[i]);
     continue;
   }
-  if (insertStart && trimmed.startsWith('(') && trimmed.endsWith(');')) {
-    // Skip entire line if duplicate
-    const valuesStr = trimmed.slice(0, -1); // Remove ;
-    if (!seen.has(valuesStr)) {
-      seen.add(valuesStr);
-      uniqueLines.push(line);
+
+  if (inInsertBlock) {
+    if (trimmed.startsWith('(')) {
+      if (!seen.has(trimmed)) {
+        seen.add(trimmed);
+        output.push(lines[i]);
+      }
+      continue;
     }
-    continue;
+    if (trimmed === '' || trimmed.startsWith('--')) {
+      inInsertBlock = false;
+      output.push(lines[i]);
+      continue;
+    }
+    if (trimmed === '') {
+      inInsertBlock = false;
+    }
   }
-  if (insertStart && trimmed === '') {
-    insertStart = false; // End of batch
-  }
-  uniqueLines.push(line);
+
+  output.push(lines[i]);
 }
 
-const newSql = uniqueLines.join('\n');
+const newSql = output.join('\n');
 fs.writeFileSync('complete-database.sql', newSql);
 
-console.log(`Deduplicated to ${seen.size} unique INSERT VALUES lines`);
-console.log('File overwritten successfully. Original had duplicates across batches.');
-
+console.log(`Deduplicated: ${seen.size} unique data rows kept`);
+console.log(`Original lines: ${lines.length}, New lines: ${output.length}`);

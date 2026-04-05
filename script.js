@@ -111,22 +111,22 @@ function parseOperatingSystems(sql) {
         const rows = extractValues(match[1]);
         rows.forEach(row => {
             const vals = parseRowValues(row);
-            if (vals.length >= 15) {
+            if (vals.length >= 14) {
                 entries.push({
                     family_id: vals[0],
-                    name: vals[2],
-                    version: vals[3],
-                    codename: vals[4] || null,
-                    architecture: vals[5] || '64-bit',
-                    size_gb: parseFloat(vals[6]) || 0,
-                    description: vals[7] || '',
-                    release_date: vals[8] || null,
-                    eos_date: vals[9] || null,
-                    is_lts: parseInt(vals[10]) || 0,
-                    is_supported: parseInt(vals[11]) !== 0,
-                    language: vals[12] || 'English',
-                    edition: vals[13] || 'Standard',
-                    download_url: vals[14] || ''
+                    name: vals[1],
+                    version: vals[2],
+                    codename: vals[3] || null,
+                    architecture: vals[4] || '64-bit',
+                    size_gb: parseFloat(vals[5]) || 0,
+                    description: vals[6] || '',
+                    release_date: vals[7] || null,
+                    eos_date: vals[8] || null,
+                    is_lts: parseInt(vals[9]) || 0,
+                    is_supported: parseInt(vals[10]) !== 0,
+                    language: vals[11] || 'English',
+                    edition: vals[12] || 'Standard',
+                    download_url: vals[13] || ''
                 });
             }
         });
