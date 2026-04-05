@@ -40,6 +40,56 @@ const FAMILY_ICONS = {
     'Software': 'fas fa-laptop-code'
 };
 
+const OS_LOGOS = {
+    'Windows 11': { bg: '#0078D4', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88" width="32" height="32"><path d="M0 12.402l35.687-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.01 45.916zm4.343-38.357L87.627 0v41.527l-47.614.272zm47.63 4.099l-.028 41.52-47.602-6.866-.002-34.62z" fill="white"/></svg>` },
+    'Windows 10': { bg: '#0078D4', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88" width="32" height="32"><path d="M0 12.402l35.687-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.01 45.916zm4.343-38.357L87.627 0v41.527l-47.614.272zm47.63 4.099l-.028 41.52-47.602-6.866-.002-34.62z" fill="white"/></svg>` },
+    'Windows 8.1': { bg: '#0078D4', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88" width="32" height="32"><path d="M0 12.402l35.687-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.01 45.916zm4.343-38.357L87.627 0v41.527l-47.614.272zm47.63 4.099l-.028 41.52-47.602-6.866-.002-34.62z" fill="white"/></svg>` },
+    'Windows 8': { bg: '#0078D4', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88" width="32" height="32"><path d="M0 12.402l35.687-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.01 45.916zm4.343-38.357L87.627 0v41.527l-47.614.272zm47.63 4.099l-.028 41.52-47.602-6.866-.002-34.62z" fill="white"/></svg>` },
+    'Windows 7': { bg: '#0078D4', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88" width="32" height="32"><path d="M0 12.402l35.687-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.01 45.916zm4.343-38.357L87.627 0v41.527l-47.614.272zm47.63 4.099l-.028 41.52-47.602-6.866-.002-34.62z" fill="white"/></svg>` },
+    'Windows Vista': { bg: '#0078D4', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88" width="32" height="32"><path d="M0 12.402l35.687-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.01 45.916zm4.343-38.357L87.627 0v41.527l-47.614.272zm47.63 4.099l-.028 41.52-47.602-6.866-.002-34.62z" fill="white"/></svg>` },
+    'Windows XP': { bg: '#3766AB', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88" width="32" height="32"><path d="M0 12.402l35.687-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.01 45.916zm4.343-38.357L87.627 0v41.527l-47.614.272zm47.63 4.099l-.028 41.52-47.602-6.866-.002-34.62z" fill="white"/></svg>` },
+    'Ubuntu': { bg: '#E95420', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><circle cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="6"/><circle cx="50" cy="12" r="8" fill="white"/><circle cx="17" cy="68" r="8" fill="white"/><circle cx="83" cy="68" r="8" fill="white"/></svg>` },
+    'Debian': { bg: '#A80030', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><circle cx="50" cy="50" r="40" fill="none" stroke="white" stroke-width="5"/><text x="50" y="62" text-anchor="middle" font-size="40" font-weight="bold" fill="white" font-family="serif">d</text></svg>` },
+    'Fedora': { bg: '#294172', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M50 10 C30 10,10 30,10 50 C10 70,30 90,50 90 C70 90,90 70,90 50 C90 30,70 10,50 10Z" fill="none" stroke="white" stroke-width="5"/><path d="M35 50 L45 60 L65 40" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>` },
+    'Linux Mint': { bg: '#69B53B', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M50 15 L30 40 L35 40 L25 70 L40 50 L35 50 L50 30 L65 50 L60 50 L75 70 L65 40 L70 40 Z" fill="white"/></svg>` },
+    'Arch Linux': { bg: '#1793D1', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M50 10 L15 85 L35 85 L50 50 L65 85 L85 85 Z" fill="white"/></svg>` },
+    'openSUSE': { bg: '#73BA25', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M50 10 L20 40 L20 70 L50 90 L80 70 L80 40 Z" fill="none" stroke="white" stroke-width="6"/><text x="50" y="58" text-anchor="middle" font-size="24" font-weight="bold" fill="white" font-family="sans-serif">Gecko</text></svg>` },
+    'CentOS': { bg: '#262577', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><circle cx="50" cy="50" r="35" fill="none" stroke="white" stroke-width="6"/><text x="50" y="58" text-anchor="middle" font-size="28" font-weight="bold" fill="white" font-family="sans-serif">c</text></svg>` },
+    'Rocky Linux': { bg: '#10B981', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M50 15 L20 45 L20 75 L50 90 L80 75 L80 45 Z" fill="none" stroke="white" stroke-width="6"/><path d="M35 55 L50 40 L65 55" fill="none" stroke="white" stroke-width="5" stroke-linecap="round"/></svg>` },
+    'AlmaLinux': { bg: '#00B4E1', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><circle cx="50" cy="50" r="35" fill="none" stroke="white" stroke-width="6"/><path d="M35 50 L50 35 L65 50 L50 65 Z" fill="white"/></svg>` },
+    'Manjaro': { bg: '#35BF5C', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M25 80 L25 20 L50 50 L75 20 L75 80" fill="none" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>` },
+    'Kali Linux': { bg: '#367BF0', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M50 15 L25 45 L35 45 L25 75 L50 55 L75 75 L65 45 L75 45 Z" fill="white"/></svg>` },
+    'Pop!_OS': { bg: '#48B9C7', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><circle cx="50" cy="50" r="35" fill="none" stroke="white" stroke-width="6"/><path d="M35 50 L50 35 L65 50 L50 65 Z" fill="white"/></svg>` },
+    'Zorin OS': { bg: '#15A6E0', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M50 15 L20 45 L20 75 L50 90 L80 75 L80 45 Z" fill="none" stroke="white" stroke-width="6"/><circle cx="50" cy="55" r="12" fill="white"/></svg>` },
+    'macOS': { bg: '#000000', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M65 35 C60 30,55 25,50 25 C45 25,40 30,35 35 C30 40,25 50,25 60 C25 75,35 85,50 85 C65 85,75 75,75 60 C75 50,70 40,65 35Z" fill="white"/></svg>` },
+    'macOS Sonoma': { bg: '#000000', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M65 35 C60 30,55 25,50 25 C45 25,40 30,35 35 C30 40,25 50,25 60 C25 75,35 85,50 85 C65 85,75 75,75 60 C75 50,70 40,65 35Z" fill="white"/></svg>` },
+    'macOS Sequoia': { bg: '#000000', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M65 35 C60 30,55 25,50 25 C45 25,40 30,35 35 C30 40,25 50,25 60 C25 75,35 85,50 85 C65 85,75 75,75 60 C75 50,70 40,65 35Z" fill="white"/></svg>` },
+    'macOS Ventura': { bg: '#000000', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M65 35 C60 30,55 25,50 25 C45 25,40 30,35 35 C30 40,25 50,25 60 C25 75,35 85,50 85 C65 85,75 75,75 60 C75 50,70 40,65 35Z" fill="white"/></svg>` },
+    'macOS Monterey': { bg: '#000000', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M65 35 C60 30,55 25,50 25 C45 25,40 30,35 35 C30 40,25 50,25 60 C25 75,35 85,50 85 C65 85,75 75,75 60 C75 50,70 40,65 35Z" fill="white"/></svg>` },
+    'macOS Big Sur': { bg: '#000000', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M65 35 C60 30,55 25,50 25 C45 25,40 30,35 35 C30 40,25 50,25 60 C25 75,35 85,50 85 C65 85,75 75,75 60 C75 50,70 40,65 35Z" fill="white"/></svg>` },
+    'FreeBSD': { bg: '#AB2B28', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M50 15 L20 45 L20 75 L50 90 L80 75 L80 45 Z" fill="none" stroke="white" stroke-width="6"/><text x="50" y="58" text-anchor="middle" font-size="28" font-weight="bold" fill="white" font-family="serif">BSD</text></svg>` },
+    'Chrome OS': { bg: '#4285F4', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><circle cx="50" cy="50" r="35" fill="none" stroke="white" stroke-width="8"/><circle cx="50" cy="50" r="12" fill="white"/></svg>` },
+    'Raspberry Pi OS': { bg: '#C51848', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><rect x="20" y="20" width="60" height="60" rx="8" fill="none" stroke="white" stroke-width="6"/><circle cx="35" cy="40" r="5" fill="white"/><circle cx="65" cy="40" r="5" fill="white"/><path d="M35 60 L50 50 L65 60" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/></svg>` },
+    'Gentoo': { bg: '#54487A', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M50 15 L20 45 L20 75 L50 90 L80 75 L80 45 Z" fill="none" stroke="white" stroke-width="6"/><path d="M40 55 L50 40 L60 55 L50 70 Z" fill="white"/></svg>` },
+    'Slackware': { bg: '#000000', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><text x="50" y="60" text-anchor="middle" font-size="30" font-weight="bold" fill="white" font-family="monospace">S</text></svg>` },
+    'Void Linux': { bg: '#478061', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M50 15 L20 50 L50 85 L80 50 Z" fill="none" stroke="white" stroke-width="6"/><circle cx="50" cy="50" r="10" fill="white"/></svg>` },
+    'Windows Server': { bg: '#0078D4', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88" width="32" height="32"><path d="M0 12.402l35.687-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.01 45.916zm4.343-38.357L87.627 0v41.527l-47.614.272zm47.63 4.099l-.028 41.52-47.602-6.866-.002-34.62z" fill="white"/></svg>` },
+    'macOS Catalina': { bg: '#000000', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M65 35 C60 30,55 25,50 25 C45 25,40 30,35 35 C30 40,25 50,25 60 C25 75,35 85,50 85 C65 85,75 75,75 60 C75 50,70 40,65 35Z" fill="white"/></svg>` },
+    'macOS Mojave': { bg: '#000000', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M65 35 C60 30,55 25,50 25 C45 25,40 30,35 35 C30 40,25 50,25 60 C25 75,35 85,50 85 C65 85,75 75,75 60 C75 50,70 40,65 35Z" fill="white"/></svg>` },
+    'macOS High Sierra': { bg: '#000000', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M65 35 C60 30,55 25,50 25 C45 25,40 30,35 35 C30 40,25 50,25 60 C25 75,35 85,50 85 C65 85,75 75,75 60 C75 50,70 40,65 35Z" fill="white"/></svg>` },
+    'macOS Sierra': { bg: '#000000', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M65 35 C60 30,55 25,50 25 C45 25,40 30,35 35 C30 40,25 50,25 60 C25 75,35 85,50 85 C65 85,75 75,75 60 C75 50,70 40,65 35Z" fill="white"/></svg>` },
+    'CentOS Stream': { bg: '#262577', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><circle cx="50" cy="50" r="35" fill="none" stroke="white" stroke-width="6"/><text x="50" y="58" text-anchor="middle" font-size="28" font-weight="bold" fill="white" font-family="sans-serif">c</text></svg>` },
+    'openSUSE Leap': { bg: '#73BA25', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M50 10 L20 40 L20 70 L50 90 L80 70 L80 40 Z" fill="none" stroke="white" stroke-width="6"/><text x="50" y="58" text-anchor="middle" font-size="24" font-weight="bold" fill="white" font-family="sans-serif">Gecko</text></svg>` },
+    'openSUSE Tumbleweed': { bg: '#35B44A', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><path d="M50 10 L20 40 L20 70 L50 90 L80 70 L80 40 Z" fill="none" stroke="white" stroke-width="6"/><text x="50" y="58" text-anchor="middle" font-size="24" font-weight="bold" fill="white" font-family="sans-serif">Gecko</text></svg>` },
+    'Android-x86': { bg: '#3DDC84', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32"><rect x="25" y="30" width="50" height="45" rx="8" fill="none" stroke="white" stroke-width="5"/><circle cx="38" cy="48" r="4" fill="white"/><circle cx="62" cy="48" r="4" fill="white"/><path d="M40 62 L60 62" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>` },
+};
+
+function getOSLogo(name) {
+    const logo = OS_LOGOS[name];
+    if (logo) return logo;
+    return null;
+}
+
 const SOFTWARE_LOGOS = {
     'Visual Studio Code': { icon: 'fas fa-code', color: '#007ACC' },
     'Visual Studio 2022': { icon: 'fas fa-laptop-code', color: '#5C2D91' },
@@ -219,9 +269,12 @@ function renderRadioList(container, items, namePrefix, iconClass, onSelect, soft
         const countText = count ? ` ${count} item${count > 1 ? 's' : ''}` : '';
 
         let iconHtml;
-        const logo = getSoftwareLogo(label);
-        if (logo) {
-            iconHtml = `<span class="inline-flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-lg" style="background:${logo.color}"><i class="${logo.icon}" style="color:#fff;font-size:1rem"></i></span>`;
+        const osLogo = getOSLogo(label);
+        const swLogo = getSoftwareLogo(label);
+        if (osLogo) {
+            iconHtml = `<span class="inline-flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-lg" style="background:${osLogo.bg}">${osLogo.svg}</span>`;
+        } else if (swLogo) {
+            iconHtml = `<span class="inline-flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-lg" style="background:${swLogo.color}"><i class="${swLogo.icon}" style="color:#fff;font-size:1rem"></i></span>`;
         } else {
             iconHtml = `<span class="inline-flex text-2xl md:text-3xl"><i class="${iconClass}"></i></span>`;
         }
