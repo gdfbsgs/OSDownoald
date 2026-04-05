@@ -40,6 +40,137 @@ const FAMILY_ICONS = {
     'Software': 'fas fa-laptop-code'
 };
 
+const SOFTWARE_LOGOS = {
+    'Visual Studio Code': { icon: 'fas fa-code', color: '#007ACC' },
+    'Visual Studio 2022': { icon: 'fas fa-laptop-code', color: '#5C2D91' },
+    'Docker Desktop': { icon: 'fab fa-docker', color: '#2496ED' },
+    'VMware Workstation Pro': { icon: 'fas fa-server', color: '#60708C' },
+    'Zoom Client': { icon: 'fas fa-video', color: '#2D8CFF' },
+    'Adobe Acrobat Reader DC': { icon: 'fas fa-file-pdf', color: '#EC1C24' },
+    'Adobe Photoshop': { icon: 'fas fa-image', color: '#31A8FF' },
+    'Adobe Premiere Pro': { icon: 'fas fa-film', color: '#9999FF' },
+    'Adobe Illustrator': { icon: 'fas fa-pen-nib', color: '#FF9A00' },
+    'Microsoft Office': { icon: 'fas fa-file-word', color: '#D83B01' },
+    'Microsoft Office LTSC': { icon: 'fas fa-file-word', color: '#D83B01' },
+    'Google Chrome': { icon: 'fab fa-chrome', color: '#4285F4' },
+    'Mozilla Firefox': { icon: 'fab fa-firefox-browser', color: '#FF7139' },
+    'Microsoft Edge': { icon: 'fab fa-edge', color: '#0078D7' },
+    'Brave Browser': { icon: 'fas fa-shield-alt', color: '#FB542B' },
+    'Opera Browser': { icon: 'fab fa-opera', color: '#FF1B2D' },
+    'Node.js': { icon: 'fab fa-node-js', color: '#339933' },
+    'Python': { icon: 'fab fa-python', color: '#3776AB' },
+    'Git': { icon: 'fab fa-git-alt', color: '#F05032' },
+    'GitHub Desktop': { icon: 'fab fa-github', color: '#24292E' },
+    'OBS Studio': { icon: 'fas fa-broadcast-tower', color: '#302E31' },
+    'VLC media player': { icon: 'fas fa-play-circle', color: '#FF8800' },
+    '7-Zip': { icon: 'fas fa-file-archive', color: '#2B7D2B' },
+    'WinRAR': { icon: 'fas fa-file-archive', color: '#2257B5' },
+    'Notepad++': { icon: 'fas fa-file-code', color: '#90E59A' },
+    'Postman': { icon: 'fas fa-paper-plane', color: '#FF6C37' },
+    'JetBrains IntelliJ IDEA': { icon: 'fas fa-code', color: '#FE2D52' },
+    'PyCharm': { icon: 'fas fa-code', color: '#21D789' },
+    'WebStorm': { icon: 'fas fa-code', color: '#07C3F2' },
+    'CLion': { icon: 'fas fa-code', color: '#314E96' },
+    'Fleet': { icon: 'fas fa-rocket', color: '#FE2D52' },
+    'Slack': { icon: 'fab fa-slack', color: '#4A154B' },
+    'Discord': { icon: 'fab fa-discord', color: '#5865F2' },
+    'Spotify': { icon: 'fab fa-spotify', color: '#1DB954' },
+    'WhatsApp Desktop': { icon: 'fab fa-whatsapp', color: '#25D366' },
+    'Telegram Desktop': { icon: 'fab fa-telegram-plane', color: '#0088CC' },
+    'Microsoft Teams': { icon: 'fas fa-users', color: '#6264A7' },
+    'Microsoft OneDrive': { icon: 'fas fa-cloud', color: '#0078D4' },
+    'Microsoft PowerToys': { icon: 'fas fa-tools', color: '#0078D4' },
+    'WinDirStat': { icon: 'fas fa-hdd', color: '#4CAF50' },
+    'CPU-Z': { icon: 'fas fa-microchip', color: '#2196F3' },
+    'GPU-Z': { icon: 'fas fa-microchip', color: '#FF9800' },
+    'CrystalDiskInfo': { icon: 'fas fa-hdd', color: '#00BCD4' },
+    'HandBrake': { icon: 'fas fa-blender', color: '#E67E22' },
+    'GIMP': { icon: 'fas fa-paint-brush', color: '#8B6914' },
+    'Inkscape': { icon: 'fas fa-vector-square', color: '#000000' },
+    'Audacity': { icon: 'fas fa-headphones', color: '#0000CC' },
+    'LibreOffice': { icon: 'fas fa-file-alt', color: '#18A303' },
+    'Thunderbird': { icon: 'fas fa-envelope', color: '#0A84FF' },
+    'FileZilla': { icon: 'fas fa-server', color: '#BF0000' },
+    'PuTTY': { icon: 'fas fa-terminal', color: '#000000' },
+    'Wireshark': { icon: 'fas fa-network-wired', color: '#1679A7' },
+    'VirtualBox': { icon: 'fas fa-cube', color: '#183A61' },
+    'BalenaEtcher': { icon: 'fas fa-usb', color: '#00AEF0' },
+    'Rufus': { icon: 'fab fa-usb', color: '#0066CC' },
+    'Steam': { icon: 'fab fa-steam', color: '#1B2838' },
+    'Epic Games Launcher': { icon: 'fas fa-gamepad', color: '#2F2F2F' },
+    'Blender': { icon: 'fas fa-cube', color: '#E87D0D' },
+    'Unity Hub': { icon: 'fas fa-gamepad', color: '#FFFFFF' },
+    'Rust': { icon: 'fas fa-cog', color: '#CE422B' },
+    'Go': { icon: 'fab fa-golang', color: '#00ADD8' },
+    'Java JDK': { icon: 'fab fa-java', color: '#007396' },
+    'Ruby': { icon: 'fas fa-gem', color: '#CC342D' },
+    'PHP': { icon: 'fab fa-php', color: '#777BB4' },
+    'MySQL': { icon: 'fas fa-database', color: '#4479A1' },
+    'PostgreSQL': { icon: 'fas fa-database', color: '#336791' },
+    'MongoDB': { icon: 'fas fa-leaf', color: '#47A248' },
+    'Redis': { icon: 'fas fa-database', color: '#DC382D' },
+    'DBeaver': { icon: 'fas fa-database', color: '#382923' },
+    'TablePlus': { icon: 'fas fa-database', color: '#007AFF' },
+    'Notion': { icon: 'fas fa-sticky-note', color: '#000000' },
+    'Obsidian': { icon: 'fas fa-gem', color: '#7C3AED' },
+    'Figma Desktop': { icon: 'fab fa-figma', color: '#F24E1E' },
+    'Canva Desktop': { icon: 'fas fa-palette', color: '#7D2CFF' },
+    'AutoCAD': { icon: 'fas fa-drafting-compass', color: '#E51075' },
+    'SketchUp': { icon: 'fas fa-cubes', color: '#005F9E' },
+    'Krita': { icon: 'fas fa-paint-brush', color: '#4E9A06' },
+    'Darktable': { icon: 'fas fa-camera', color: '#303030' },
+    'Shotcut': { icon: 'fas fa-film', color: '#3399FF' },
+    'DaVinci Resolve': { icon: 'fas fa-film', color: '#E01E37' },
+    'CapCut Desktop': { icon: 'fas fa-video', color: '#000000' },
+    'Paint.NET': { icon: 'fas fa-palette', color: '#4A90D9' },
+    'IrfanView': { icon: 'fas fa-image', color: '#0066CC' },
+    'Sumatra PDF': { icon: 'fas fa-file-pdf', color: '#F5A623' },
+    'Foxit Reader': { icon: 'fas fa-file-pdf', color: '#0066CC' },
+    'Calibre': { icon: 'fas fa-book', color: '#1F4E79' },
+    'KeePassXC': { icon: 'fas fa-key', color: '#6CAC4D' },
+    'Bitwarden': { icon: 'fas fa-shield-alt', color: '#175DDC' },
+    'qBittorrent': { icon: 'fas fa-download', color: '#2D9B45' },
+    'Transmission': { icon: 'fas fa-download', color: '#000000' },
+    'JDownloader 2': { icon: 'fas fa-download', color: '#2E8B57' },
+    'Internet Download Manager': { icon: 'fas fa-download', color: '#0078D4' },
+    'HWMonitor': { icon: 'fas fa-thermometer-half', color: '#FF6600' },
+    'Speccy': { icon: 'fas fa-desktop', color: '#0078D4' },
+    'CCleaner': { icon: 'fas fa-broom', color: '#CC513F' },
+    'Malwarebytes': { icon: 'fas fa-shield-alt', color: '#0D47A1' },
+    'Avast Free Antivirus': { icon: 'fas fa-shield-alt', color: '#FF6600' },
+    'NVIDIA GeForce Experience': { icon: 'fas fa-microchip', color: '#76B900' },
+    'AMD Adrenalin': { icon: 'fas fa-microchip', color: '#ED1C24' },
+    'Logitech G Hub': { icon: 'fas fa-mouse', color: '#00B8FC' },
+    'Razer Synapse': { icon: 'fas fa-keyboard', color: '#44D62C' },
+    'OBS Virtual Camera': { icon: 'fas fa-video', color: '#302E31' },
+    'ZoomIt': { icon: 'fas fa-search-plus', color: '#0078D4' },
+    'ShareX': { icon: 'fas fa-camera', color: '#2980B9' },
+    'Greenshot': { icon: 'fas fa-camera', color: '#4CAF50' },
+    'PowerShell': { icon: 'fas fa-terminal', color: '#5391FE' },
+    'Windows Terminal': { icon: 'fas fa-terminal', color: '#4D4D4D' },
+    'Neovim': { icon: 'fas fa-terminal', color: '#57A143' },
+    'Sublime Text': { icon: 'fas fa-file-code', color: '#FF9800' },
+    'Atom': { icon: 'fas fa-atom', color: '#66595C' },
+    'Android Studio': { icon: 'fab fa-android', color: '#3DDC84' },
+    'XAMPP': { icon: 'fas fa-server', color: '#FB7A24' },
+    'WampServer': { icon: 'fas fa-server', color: '#2E8B57' },
+    'Local (by Flywheel)': { icon: 'fab fa-wordpress', color: '#21759B' },
+    'Sourcetree': { icon: 'fas fa-code-branch', color: '#0052CC' },
+    'TortoiseGit': { icon: 'fab fa-git-alt', color: '#4A90D9' },
+    'Beyond Compare': { icon: 'fas fa-columns', color: '#2196F3' },
+    'Everything': { icon: 'fas fa-search', color: '#2196F3' },
+    'Listary': { icon: 'fas fa-search', color: '#FF6600' },
+    'AutoHotkey': { icon: 'fas fa-keyboard', color: '#339933' },
+    'KeyTweak': { icon: 'fas fa-keyboard', color: '#4CAF50' },
+    'PostgreSQL': { icon: 'fas fa-database', color: '#336791' }
+};
+
+function getSoftwareLogo(name) {
+    const logo = SOFTWARE_LOGOS[name];
+    if (logo) return logo;
+    return null;
+}
+
 const DEFAULT_FAMILIES = [
     { id: '1', name: 'Windows', icon: '🪟' },
     { id: '2', name: 'Linux', icon: '🐧' },
@@ -81,16 +212,25 @@ function getUniqueValues(entries, field) {
     return [...new Set(entries.map(e => e[field]).filter(Boolean))];
 }
 
-function renderRadioList(container, items, namePrefix, iconClass, onSelect) {
+function renderRadioList(container, items, namePrefix, iconClass, onSelect, softwareName) {
     const html = items.map(item => {
         const count = typeof item === 'object' ? item.count : '';
         const label = typeof item === 'object' ? item.value : item;
         const countText = count ? ` ${count} item${count > 1 ? 's' : ''}` : '';
+
+        let iconHtml;
+        const logo = getSoftwareLogo(label);
+        if (logo) {
+            iconHtml = `<span class="inline-flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-lg" style="background:${logo.color}"><i class="${logo.icon}" style="color:#fff;font-size:1rem"></i></span>`;
+        } else {
+            iconHtml = `<span class="inline-flex text-2xl md:text-3xl"><i class="${iconClass}"></i></span>`;
+        }
+
         return `
         <li class="mb-3 last:mb-0">
             <label class="group flex cursor-pointer items-center space-x-2 rounded-2xl border-2 border-amethyst-300 p-4 text-lg font-medium text-amethyst-500 hover:border-amethyst-800 aria-selected:border-amethyst-400 aria-selected:bg-amethyst-50 [&[aria-selected]]:hover:border-amethyst-800" aria-selected="false">
                 <input type="radio" name="item-${namePrefix}" value="${label}" class="appearance-none border-2 border-amethyst-200 checked:border-amethyst-300 checked:bg-amethyst-500 group-hover:border-amethyst-800" required>
-                <span class="inline-flex text-2xl md:text-3xl"><i class="${iconClass}"></i></span>
+                ${iconHtml}
                 <span class="flex w-full items-center justify-between text-lg md:text-xl">
                     <span class="flex flex-col items-start"><span>${label}</span></span>
                     ${countText ? `<span class="text-sm text-amethyst-400">${countText}</span>` : ''}
