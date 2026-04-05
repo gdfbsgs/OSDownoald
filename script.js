@@ -4,14 +4,22 @@ let osDatabase = [];
 let osFamilies = [];
 let currentStage = 'OsFamily';
 let selectedFamily = null;
+let selectedOsName = null;
+let selectedBuild = null;
+let selectedArch = null;
+let selectedEdition = null;
+let selectedLanguage = null;
 let selectedOs = null;
 let NProgress = window.NProgress;
 
 const appEl = document.getElementById('app');
 const startEl = document.getElementById('start');
 const familyListContainer = document.getElementById('family-list-container');
-const osStage = document.querySelector('[data-stage="Os"]');
 const osListContainer = document.getElementById('os-list-container');
+const buildListContainer = document.getElementById('build-list-container');
+const archListContainer = document.getElementById('arch-list-container');
+const editionListContainer = document.getElementById('edition-list-container');
+const langListContainer = document.getElementById('lang-list-container');
 const downloadStage = document.querySelector('[data-panel="Download"]');
 
 const selectedNameEl = document.getElementById('selected-os-name');
@@ -39,31 +47,102 @@ const DEFAULT_FAMILIES = [
     { id: '4', name: 'Software', icon: '💻' }
 ];
 
+const STAGE_ORDER = ['OsFamily', 'Os', 'Build', 'Architecture', 'Edition', 'Language', 'Download'];
+
+function np(action, ...args) {
+    if (typeof NProgress !== 'undefined' && NProgress && typeof NProgress[action] === 'function') {
+        NProgress[action](...args);
+    }
+}
+
+function getStageContainer(stage) {
+    const map = {
+        'OsFamily': familyListContainer,
+        'Os': osListContainer,
+        'Build': buildListContainer,
+        'Architecture': archListContainer,
+        'Edition': editionListContainer,
+        'Language': langListContainer
+    };
+    return map[stage];
+}
+
+function getFilteredEntries() {
+    let entries = osDatabase.filter(os => os.family === selectedFamily);
+    if (selectedOsName) entries = entries.filter(os => os.name === selectedOsName);
+    if (selectedBuild) entries = entries.filter(os => os.version === selectedBuild);
+    if (selectedArch) entries = entries.filter(os => os.architecture === selectedArch);
+    if (selectedEdition) entries = entries.filter(os => os.edition === selectedEdition);
+    if (selectedLanguage) entries = entries.filter(os => os.language === selectedLanguage);
+    return entries;
+}
+
+function getUniqueValues(entries, field) {
+    return [...new Set(entries.map(e => e[field]).filter(Boolean))];
+}
+
+function renderRadioList(container, items, namePrefix, iconClass, onSelect) {
+    const html = items.map(item => {
+        const count = typeof item === 'object' ? item.count : '';
+        const label = typeof item === 'object' ? item.value : item;
+        const countText = count ? ` ${count} item${count > 1 ? 's' : ''}` : '';
+        return `
+        <li class="mb-3 last:mb-0">
+            <label class="group flex cursor-pointer items-center space-x-2 rounded-2xl border-2 border-amethyst-300 p-4 text-lg font-medium text-amethyst-500 hover:border-amethyst-800 aria-selected:border-amethyst-400 aria-selected:bg-amethyst-50 [&[aria-selected]]:hover:border-amethyst-800" aria-selected="false">
+                <input type="radio" name="item-${namePrefix}" value="${label}" class="appearance-none border-2 border-amethyst-200 checked:border-amethyst-300 checked:bg-amethyst-500 group-hover:border-amethyst-800" required>
+                <span class="inline-flex text-2xl md:text-3xl"><i class="${iconClass}"></i></span>
+                <span class="flex w-full items-center justify-between text-lg md:text-xl">
+                    <span class="flex flex-col items-start"><span>${label}</span></span>
+                    ${countText ? `<span class="text-sm text-amethyst-400">${countText}</span>` : ''}
+                </span>
+            </label>
+        </li>`;
+    }).join('');
+
+    container.innerHTML = html;
+
+    container.querySelectorAll(`input[name="item-${namePrefix}"]`).forEach(radio => {
+        radio.addEventListener('change', onSelect);
+    });
+}
+
+function advanceStage(fromStage) {
+    const idx = STAGE_ORDER.indexOf(fromStage);
+    if (idx < STAGE_ORDER.length - 2) {
+        currentStage = STAGE_ORDER[idx + 1];
+    } else {
+        currentStage = 'Download';
+    }
+    updateWizard();
+    np('done');
+}
+
 async function init() {
-    NProgress.configure({ showSpinner: false });
-    NProgress.start();
+    np('configure', { showSpinner: false });
+    np('start');
+
+    osFamilies = [...DEFAULT_FAMILIES];
+    populateFamilyOptions();
+
+    let pageData = null;
+    try {
+        pageData = JSON.parse(appEl.dataset.page);
+    } catch (e) {
+        console.warn('Failed to parse page data:', e.message);
+        pageData = { props: { popularOs: [], isoCount: 4441 } };
+    }
 
     try {
-        const pageData = JSON.parse(appEl.dataset.page);
-
-        osFamilies = [...DEFAULT_FAMILIES];
-        populateFamilyOptions();
-
-        try {
-            await loadDatabase();
-        } catch (dbError) {
-            console.warn('DB load failed, using defaults:', dbError.message);
-        }
-
-        setupEventListeners();
-        setupPopularLinks(pageData.props.popularOs);
-        updateIsoCount(pageData.props.isoCount);
-        console.log('OS.click ready:', osDatabase.length, 'entries');
-        NProgress.done();
-    } catch (error) {
-        console.error('Init failed:', error);
-        NProgress.done(true);
+        await loadDatabase();
+    } catch (dbError) {
+        console.warn('DB load failed, using defaults:', dbError.message);
     }
+
+    setupEventListeners();
+    setupPopularLinks(pageData.props.popularOs);
+    updateIsoCount(pageData.props.isoCount);
+    console.log('OS.click ready:', osDatabase.length, 'entries');
+    np('done');
 }
 
 async function loadDatabase() {
@@ -206,28 +285,18 @@ function getFamilyIcon(familyName) {
 }
 
 function populateFamilyOptions() {
-    const html = osFamilies.map(family => `
-        <li class="mb-3 last:mb-0">
-            <label class="group flex cursor-pointer items-center space-x-2 rounded-2xl border-2 border-amethyst-300 p-4 text-lg font-medium text-amethyst-500 hover:border-amethyst-800 aria-selected:border-amethyst-400 aria-selected:bg-amethyst-50 [&[aria-selected]]:hover:border-amethyst-800" aria-selected="false" for="item-OsFamily-${family.name}">
-                <input id="item-OsFamily-${family.name}" class="appearance-none border-2 border-amethyst-200 checked:border-amethyst-300 checked:bg-amethyst-500 group-hover:border-amethyst-800" type="radio" aria-label="${family.name}" name="item-OsFamily" value="${family.name}">
-                <span class="inline-flex text-2xl md:text-3xl"><i class="${getFamilyIcon(family.name)}"></i></span>
-                <span class="flex w-full items-center justify-between text-lg md:text-xl">
-                    <span class="flex flex-col items-start"><span>${family.name}</span></span>
-                </span>
-            </label>
-        </li>
-    `).join('');
-
-    familyListContainer.innerHTML = html;
-
-    familyListContainer.querySelectorAll('input[name="item-OsFamily"]').forEach(radio => {
-        radio.addEventListener('change', handleFamilySelect);
-    });
+    renderRadioList(familyListContainer, osFamilies.map(f => f.name), 'OsFamily', getFamilyIcon(osFamilies[0]?.name || 'Windows'), handleFamilySelect);
 }
 
 function handleFamilySelect(e) {
     selectedFamily = e.target.value;
-    NProgress.start();
+    selectedOsName = null;
+    selectedBuild = null;
+    selectedArch = null;
+    selectedEdition = null;
+    selectedLanguage = null;
+    selectedOs = null;
+    np('start');
 
     familyListContainer.querySelectorAll('input[name="item-OsFamily"]').forEach(r => {
         r.closest('li').setAttribute('aria-selected', r === e.target ? 'true' : 'false');
@@ -236,94 +305,187 @@ function handleFamilySelect(e) {
     setTimeout(() => {
         currentStage = 'Os';
         updateWizard();
-        populateOsOptions(selectedFamily);
-        NProgress.done();
+        populateOsOptions();
+        np('done');
     }, 300);
 }
 
-function populateOsOptions(family) {
-    const familyOs = osDatabase.filter(os => os.family === family);
+function populateOsOptions() {
+    const filtered = osDatabase.filter(os => os.family === selectedFamily);
+    const nameCounts = {};
+    filtered.forEach(os => { nameCounts[os.name] = (nameCounts[os.name] || 0) + 1; });
+    const uniqueNames = [...new Set(filtered.map(os => os.name))];
+    const items = uniqueNames.map(name => ({ value: name, count: nameCounts[name] }));
 
-    const uniqueNames = [...new Map(familyOs.map(os => [os.name, os])).values()];
-
-    const iconClass = getFamilyIcon(family);
-
-    const html = uniqueNames.map(os => {
-        const count = familyOs.filter(f => f.name === os.name).length;
-        return `
-        <li class="mb-3 last:mb-0">
-            <label class="group flex cursor-pointer items-center space-x-2 rounded-2xl border-2 border-amethyst-300 p-4 text-lg font-medium text-amethyst-500 hover:border-amethyst-800 aria-selected:border-amethyst-400 aria-selected:bg-amethyst-50 [&[aria-selected]]:hover:border-amethyst-800" aria-selected="false">
-                <input type="radio" name="item-Os" value="${os.name}" class="appearance-none border-2 border-amethyst-200 checked:border-amethyst-300 checked:bg-amethyst-500 group-hover:border-amethyst-800" required>
-                <span class="inline-flex text-2xl md:text-3xl"><i class="${iconClass}"></i></span>
-                <span class="flex w-full items-center justify-between text-lg md:text-xl">
-                    <span class="flex flex-col items-start"><span>${os.name}</span></span>
-                    <span class="text-sm text-amethyst-400">${count} item${count > 1 ? 's' : ''}</span>
-                </span>
-            </label>
-        </li>`;
-    }).join('');
-
-    osListContainer.innerHTML = html;
-
-    osListContainer.querySelectorAll('input[name="item-Os"]').forEach(radio => {
-        radio.addEventListener('change', handleOsSelect);
-    });
+    renderRadioList(osListContainer, items, 'Os', getFamilyIcon(selectedFamily), handleOsSelect);
 }
 
 function handleOsSelect(e) {
-    const osName = e.target.value;
-    NProgress.start();
+    selectedOsName = e.target.value;
+    selectedBuild = null;
+    selectedArch = null;
+    selectedEdition = null;
+    selectedLanguage = null;
+    selectedOs = null;
+    np('start');
 
     osListContainer.querySelectorAll('input[name="item-Os"]').forEach(r => {
         r.closest('li').setAttribute('aria-selected', r === e.target ? 'true' : 'false');
     });
 
     setTimeout(() => {
-        const matches = osDatabase.filter(os => os.name === osName && os.family === selectedFamily);
+        currentStage = 'Build';
+        updateWizard();
+        populateBuildOptions();
+        np('done');
+    }, 300);
+}
 
-        selectedOs = matches.find(os =>
-            os.language === 'English' &&
-            os.architecture === '64-bit'
-        ) || matches.find(os =>
-            os.language === 'en-US' && os.architecture === '64-bit'
-        ) || matches.find(os =>
-            os.architecture === '64-bit'
-        ) || matches[0];
+function populateBuildOptions() {
+    const filtered = getFilteredEntries();
+    const builds = getUniqueValues(filtered, 'version');
+    const buildCounts = {};
+    filtered.forEach(os => { buildCounts[os.version] = (buildCounts[os.version] || 0) + 1; });
+    const items = builds.map(v => ({ value: v, count: buildCounts[v] }));
+
+    renderRadioList(buildListContainer, items, 'Build', getFamilyIcon(selectedFamily), handleBuildSelect);
+}
+
+function handleBuildSelect(e) {
+    selectedBuild = e.target.value;
+    selectedArch = null;
+    selectedEdition = null;
+    selectedLanguage = null;
+    selectedOs = null;
+    np('start');
+
+    buildListContainer.querySelectorAll('input[name="item-Build"]').forEach(r => {
+        r.closest('li').setAttribute('aria-selected', r === e.target ? 'true' : 'false');
+    });
+
+    setTimeout(() => {
+        currentStage = 'Architecture';
+        updateWizard();
+        populateArchOptions();
+        np('done');
+    }, 300);
+}
+
+function populateArchOptions() {
+    const filtered = getFilteredEntries();
+    const archs = getUniqueValues(filtered, 'architecture');
+    const archCounts = {};
+    filtered.forEach(os => { archCounts[os.architecture] = (archCounts[os.architecture] || 0) + 1; });
+    const items = archs.map(v => ({ value: v, count: archCounts[v] }));
+
+    renderRadioList(archListContainer, items, 'Architecture', getFamilyIcon(selectedFamily), handleArchSelect);
+}
+
+function handleArchSelect(e) {
+    selectedArch = e.target.value;
+    selectedEdition = null;
+    selectedLanguage = null;
+    selectedOs = null;
+    np('start');
+
+    archListContainer.querySelectorAll('input[name="item-Architecture"]').forEach(r => {
+        r.closest('li').setAttribute('aria-selected', r === e.target ? 'true' : 'false');
+    });
+
+    setTimeout(() => {
+        currentStage = 'Edition';
+        updateWizard();
+        populateEditionOptions();
+        np('done');
+    }, 300);
+}
+
+function populateEditionOptions() {
+    const filtered = getFilteredEntries();
+    const editions = getUniqueValues(filtered, 'edition');
+    const editionCounts = {};
+    filtered.forEach(os => { editionCounts[os.edition] = (editionCounts[os.edition] || 0) + 1; });
+    const items = editions.map(v => ({ value: v, count: editionCounts[v] }));
+
+    renderRadioList(editionListContainer, items, 'Edition', getFamilyIcon(selectedFamily), handleEditionSelect);
+}
+
+function handleEditionSelect(e) {
+    selectedEdition = e.target.value;
+    selectedLanguage = null;
+    selectedOs = null;
+    np('start');
+
+    editionListContainer.querySelectorAll('input[name="item-Edition"]').forEach(r => {
+        r.closest('li').setAttribute('aria-selected', r === e.target ? 'true' : 'false');
+    });
+
+    setTimeout(() => {
+        currentStage = 'Language';
+        updateWizard();
+        populateLangOptions();
+        np('done');
+    }, 300);
+}
+
+function populateLangOptions() {
+    const filtered = getFilteredEntries();
+    const langs = getUniqueValues(filtered, 'language');
+    const langCounts = {};
+    filtered.forEach(os => { langCounts[os.language] = (langCounts[os.language] || 0) + 1; });
+    const items = langs.map(v => ({ value: v, count: langCounts[v] }));
+
+    renderRadioList(langListContainer, items, 'Language', getFamilyIcon(selectedFamily), handleLangSelect);
+}
+
+function handleLangSelect(e) {
+    selectedLanguage = e.target.value;
+    np('start');
+
+    langListContainer.querySelectorAll('input[name="item-Language"]').forEach(r => {
+        r.closest('li').setAttribute('aria-selected', r === e.target ? 'true' : 'false');
+    });
+
+    setTimeout(() => {
+        const matches = getFilteredEntries();
+        selectedOs = matches[0] || null;
 
         currentStage = 'Download';
         updateWizard();
         populateDownloadPanel();
-        NProgress.done();
+        np('done');
     }, 300);
 }
 
 function updateWizard() {
-    const osFamilyStage = document.querySelector('[data-stage="OsFamily"]');
+    STAGE_ORDER.forEach((stage, idx) => {
+        const el = document.querySelector(`[data-stage="${stage}"]`);
+        if (!el) return;
 
-    if (currentStage === 'OsFamily') {
-        osFamilyStage.style.display = '';
-        osFamilyStage.dataset.current = 'true';
-        osStage.style.display = 'none';
-        osStage.dataset.current = 'false';
-        downloadStage.style.display = 'none';
-        downloadStage.dataset.current = 'false';
-    } else if (currentStage === 'Os') {
-        osFamilyStage.style.display = 'none';
-        osFamilyStage.dataset.current = 'false';
-        osStage.style.display = '';
-        osStage.dataset.current = 'true';
-        downloadStage.style.display = 'none';
-        downloadStage.dataset.current = 'false';
-        osStage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } else if (currentStage === 'Download') {
-        osFamilyStage.style.display = 'none';
-        osFamilyStage.dataset.current = 'false';
-        osStage.style.display = 'none';
-        osStage.dataset.current = 'false';
+        const stageIdx = STAGE_ORDER.indexOf(currentStage);
+
+        if (stage === currentStage) {
+            el.style.display = '';
+            el.dataset.current = 'true';
+        } else {
+            el.style.display = 'none';
+            el.dataset.current = 'false';
+        }
+    });
+
+    if (currentStage === 'Download') {
         downloadStage.style.display = '';
         downloadStage.dataset.current = 'true';
         downloadStage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+        downloadStage.style.display = 'none';
+        downloadStage.dataset.current = 'false';
+        const activeStage = document.querySelector(`[data-stage="${currentStage}"]`);
+        if (activeStage) activeStage.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+
+    const lastStage = currentStage === 'Download';
+    startEl.dataset.lastStage = lastStage;
 }
 
 function populateDownloadPanel() {
@@ -353,9 +515,14 @@ function copyChecksum() {
 }
 
 function resetWizard() {
-    NProgress.start();
+    np('start');
     currentStage = 'OsFamily';
     selectedFamily = null;
+    selectedOsName = null;
+    selectedBuild = null;
+    selectedArch = null;
+    selectedEdition = null;
+    selectedLanguage = null;
     selectedOs = null;
 
     familyListContainer.querySelectorAll('input[name="item-OsFamily"]').forEach(r => {
@@ -363,11 +530,15 @@ function resetWizard() {
         r.closest('li').setAttribute('aria-selected', 'false');
     });
     osListContainer.innerHTML = '';
+    buildListContainer.innerHTML = '';
+    archListContainer.innerHTML = '';
+    editionListContainer.innerHTML = '';
+    langListContainer.innerHTML = '';
 
     setTimeout(() => {
         updateWizard();
         startEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        NProgress.done();
+        np('done');
     }, 300);
 }
 
@@ -431,11 +602,7 @@ function updateIsoCount(count) {
 }
 
 if (document.readyState === 'loading') {
-    if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
-} else {
-    init();
-}
 } else {
     init();
 }

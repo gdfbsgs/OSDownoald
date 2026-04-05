@@ -35,10 +35,10 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="">
-    
-    <div id="app" 
-         data-page='{"component":"PageHome","props":{"locale":"en","appName":"OS.click","isoCount":6021,"popularOs":[{"name":"Windows 8.1","family":"Windows"},{"name":"Windows 10","family":"Windows"},{"name":"Windows 11","family":"Windows"},{"name":"Ubuntu","family":"Linux"},{"name":"Debian","family":"Linux"}],"stages":["OsFamily","Os"],"searchResults":{"OsFamily":{"items":[{"id":"Windows","name":"Windows"},{"id":"Linux","name":"Linux"}]}},"currentStage":"OsFamily","searchTerms":null},"url":"/en","version":null}'>
-        
+
+    <div id="app"
+         data-page='{"component":"PageHome","props":{"locale":"en","appName":"OS.click","isoCount":4441,"popularOs":[{"name":"Windows 8.1","family":"Windows"},{"name":"Windows 10","family":"Windows"},{"name":"Windows 11","family":"Windows"},{"name":"Ubuntu","family":"Linux"},{"name":"Debian","family":"Linux"}],"stages":["OsFamily","Os","Build","Architecture","Edition","Language"],"searchResults":{"OsFamily":{"items":[{"id":"Windows","name":"Windows"},{"id":"Linux","name":"Linux"}]}},"currentStage":"OsFamily","searchTerms":null},"url":"/en","version":null}'>
+
         <!-- Navigation -->
         <nav class="bg-amethyst-500">
             <div class="mx-auto flex max-w-screen-lg flex-wrap items-center justify-between p-4">
@@ -103,9 +103,8 @@
                             Get my ISO <span class="ml-1"><i class="fas fa-wand-magic-sparkles"></i></span>
                         </button>
                     </div>
-                    <p class="mb-8 text-lg text-amethyst-200">ISO files available: <strong class="text-white" id="iso-count-hero">6021</strong></p>
+                    <p class="mb-8 text-lg text-amethyst-200">ISO files available: <strong class="text-white" id="iso-count-hero">4441</strong></p>
                     <ul class="mx-auto w-3/4" id="popular-os-links">
-                        <!-- Populated by JS -->
                     </ul>
                 </section>
             </div>
@@ -114,31 +113,63 @@
         <!-- Main Wizard -->
         <main class="container mx-auto max-w-screen-lg px-6 py-10 md:px-8 md:py-12">
             <ol class="[&[data-last-stage=true]+section>[data-panel=Download]]:stage-disabled mx-auto max-w-lg scroll-mt-8 text-center [counter-reset:stage] md:max-w-xl md:scroll-mt-12" id="start" data-current="OsFamily" data-last-stage="false">
-                
+
                 <!-- Stage 1: OS Family -->
                 <li class="[&[data-current=true]+[data-stage]]:stage-disabled mb-16 scroll-mt-8 last:mb-0 md:mb-20 md:scroll-mt-12" data-stage="OsFamily" data-current="true">
                     <span class="before:[counter-increment:stage] before:content-[counter(stage)] mb-2 inline-flex h-12 w-12 items-center justify-center rounded-full bg-amethyst-50 text-2xl font-bold text-amethyst-500 md:mb-4 md:h-16 md:w-16 md:text-3xl"></span>
                     <h2 class="mb-8 text-2xl font-bold text-amethyst-800 md:text-3xl" id="family-title">Family</h2>
                     <div id="family-options">
-                        <ul id="family-list-container">
-                            <!-- Populated by JS from database -->
-                        </ul>
+                        <ul id="family-list-container"></ul>
                     </div>
                 </li>
 
-                <!-- Stage 2: Specific OS (hidden initially) -->
+                <!-- Stage 2: OS Name -->
                 <li class="[&[data-current=true]+[data-stage]]:stage-disabled mb-16 scroll-mt-8 last:mb-0 md:mb-20 md:scroll-mt-12" data-stage="Os" data-current="false" style="display: none;">
                     <span class="before:[counter-increment:stage] before:content-[counter(stage)] mb-2 inline-flex h-12 w-12 items-center justify-center rounded-full bg-amethyst-50 text-2xl font-bold text-amethyst-500 md:mb-4 md:h-16 md:w-16 md:text-3xl"></span>
                     <h2 class="mb-8 text-2xl font-bold text-amethyst-800 md:text-3xl">Operating System</h2>
                     <div id="os-options">
-                        <ul id="os-list-container">
-                            <!-- Dynamic OS list populated by JS -->
-                        </ul>
+                        <ul id="os-list-container"></ul>
+                    </div>
+                </li>
+
+                <!-- Stage 3: Build/Version -->
+                <li class="[&[data-current=true]+[data-stage]]:stage-disabled mb-16 scroll-mt-8 last:mb-0 md:mb-20 md:scroll-mt-12" data-stage="Build" data-current="false" style="display: none;">
+                    <span class="before:[counter-increment:stage] before:content-[counter(stage)] mb-2 inline-flex h-12 w-12 items-center justify-center rounded-full bg-amethyst-50 text-2xl font-bold text-amethyst-500 md:mb-4 md:h-16 md:w-16 md:text-3xl"></span>
+                    <h2 class="mb-8 text-2xl font-bold text-amethyst-800 md:text-3xl">Build</h2>
+                    <div id="build-options">
+                        <ul id="build-list-container"></ul>
+                    </div>
+                </li>
+
+                <!-- Stage 4: Architecture -->
+                <li class="[&[data-current=true]+[data-stage]]:stage-disabled mb-16 scroll-mt-8 last:mb-0 md:mb-20 md:scroll-mt-12" data-stage="Architecture" data-current="false" style="display: none;">
+                    <span class="before:[counter-increment:stage] before:content-[counter(stage)] mb-2 inline-flex h-12 w-12 items-center justify-center rounded-full bg-amethyst-50 text-2xl font-bold text-amethyst-500 md:mb-4 md:h-16 md:w-16 md:text-3xl"></span>
+                    <h2 class="mb-8 text-2xl font-bold text-amethyst-800 md:text-3xl">Architecture</h2>
+                    <div id="arch-options">
+                        <ul id="arch-list-container"></ul>
+                    </div>
+                </li>
+
+                <!-- Stage 5: Edition -->
+                <li class="[&[data-current=true]+[data-stage]]:stage-disabled mb-16 scroll-mt-8 last:mb-0 md:mb-20 md:scroll-mt-12" data-stage="Edition" data-current="false" style="display: none;">
+                    <span class="before:[counter-increment:stage] before:content-[counter(stage)] mb-2 inline-flex h-12 w-12 items-center justify-center rounded-full bg-amethyst-50 text-2xl font-bold text-amethyst-500 md:mb-4 md:h-16 md:w-16 md:text-3xl"></span>
+                    <h2 class="mb-8 text-2xl font-bold text-amethyst-800 md:text-3xl">Edition</h2>
+                    <div id="edition-options">
+                        <ul id="edition-list-container"></ul>
+                    </div>
+                </li>
+
+                <!-- Stage 6: Language -->
+                <li class="[&[data-current=true]+[data-stage]]:stage-disabled mb-16 scroll-mt-8 last:mb-0 md:mb-20 md:scroll-mt-12" data-stage="Language" data-current="false" style="display: none;">
+                    <span class="before:[counter-increment:stage] before:content-[counter(stage)] mb-2 inline-flex h-12 w-12 items-center justify-center rounded-full bg-amethyst-50 text-2xl font-bold text-amethyst-500 md:mb-4 md:h-16 md:w-16 md:text-3xl"></span>
+                    <h2 class="mb-8 text-2xl font-bold text-amethyst-800 md:text-3xl">Language</h2>
+                    <div id="lang-options">
+                        <ul id="lang-list-container"></ul>
                     </div>
                 </li>
             </ol>
 
-            <!-- Download Section (hidden) -->
+            <!-- Download Section -->
             <section class="mx-auto max-w-xl md:max-w-2xl">
                 <section id="download" data-panel="Download" class="mt-16 scroll-mt-8 text-center md:mt-20 md:scroll-mt-12" style="display: none;">
                     <span class="mb-2 inline-flex h-12 w-12 items-center justify-center rounded-full bg-amethyst-50 text-2xl font-bold text-amethyst-500 md:mb-4 md:h-16 md:w-16 md:text-3xl">
@@ -146,7 +177,6 @@
                     </span>
                     <h2 class="mb-8 text-2xl font-bold text-amethyst-800 md:text-3xl">Download ISO</h2>
                     <section class="block rounded-2xl border-2 border-amethyst-200 bg-white p-8 md:text-lg">
-                        <!-- OS Info -->
                         <div id="selected-os-info" class="mb-6 text-left">
                             <h3 id="selected-os-name" class="text-xl font-bold text-amethyst-800 mb-2"></h3>
                             <p id="selected-os-version" class="text-amethyst-500 mb-4"></p>
@@ -158,7 +188,6 @@
                             </div>
                         </div>
 
-                        <!-- Checksum -->
                         <table class="-mt-2 w-full table-fixed text-left text-lg md:text-xl mb-6">
                             <tbody>
                                 <tr class="bg-white border-b">
@@ -175,7 +204,6 @@
                             </tbody>
                         </table>
 
-                        <!-- Download button -->
                         <div class="mt-6">
                             <a id="download-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-block break-all rounded-lg border font-bold uppercase focus:ring-4 focus:ring-amethyst-100 bg-amethyst-500 border-amethyst-500 hover:bg-amethyst-800 text-white px-7 py-4 text-lg md:text-xl !lowercase">
                                 <span class="mr-2"><i class="fas fa-download"></i></span> Download ISO
@@ -184,7 +212,6 @@
                     </section>
                 </section>
 
-                <!-- Restart button -->
                 <section class="mt-20 text-center">
                     <button id="new-search" class="inline-block break-all rounded-lg border font-bold uppercase focus:ring-4 focus:ring-amethyst-100 bg-white text-amethyst-800 border-amethyst-100 hover:bg-amethyst-50 px-5 py-2.5" type="button">
                         <span class="mr-1"><i class="fas fa-arrow-rotate-left"></i></span> Restart
@@ -207,21 +234,18 @@
                 <p class="mx-auto mb-8 block max-w-xs text-xl font-medium text-white md:max-w-lg md:text-2xl">
                     OS.click allows you to download Windows and Linux ISO easier and faster <i class="fas fa-bolt"></i>
                 </p>
-                
-                <!-- Footer popular links -->
+
                 <section id="footer-popular">
                     <div class="mb-4 flex flex-col space-y-3 sm:flex-row sm:justify-center sm:space-x-4 sm:space-y-0">
                         <button class="inline-block break-all rounded-lg border font-bold uppercase focus:ring-4 focus:ring-amethyst-100 bg-white text-amethyst-800 border-amethyst-100 hover:bg-amethyst-50 px-6 py-4 text-lg" type="button" id="footer-get-iso-btn">
                             Get my ISO <span class="ml-1"><i class="fas fa-wand-magic-sparkles"></i></span>
                         </button>
                     </div>
-                    <p class="mb-8 text-lg text-amethyst-200">ISO files available: <strong class="text-white" id="iso-count-footer">6021</strong></p>
+                    <p class="mb-8 text-lg text-amethyst-200">ISO files available: <strong class="text-white" id="iso-count-footer">4441</strong></p>
                     <ul class="mx-auto w-3/4" id="footer-popular-os-links">
-                        <!-- Populated by JS -->
                     </ul>
                 </section>
 
-                <!-- Social links -->
                 <ul class="mt-12 flex justify-center space-x-6">
                     <li><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" class="text-amethyst-200 hover:text-amethyst-50"><i class="fab fa-creative-commons"></i> BY-NC-SA</a></li>
                     <li><a href="mailto:admin@os.click" class="text-amethyst-200 hover:text-amethyst-50"><i class="fas fa-envelope"></i> Contact</a></li>
