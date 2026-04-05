@@ -1,4 +1,4 @@
-// OS.click Wizard Logic
+// Software Collection Wizard Logic
 
 let osDatabase = [];
 let osFamilies = [];
