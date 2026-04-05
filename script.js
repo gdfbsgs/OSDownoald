@@ -286,7 +286,7 @@ async function init() {
 }
 
 async function loadDatabase() {
-    const response = await fetch('complete-database.sql');
+    const response = await fetch('database.sql');
     if (!response.ok) throw new Error('HTTP ' + response.status);
     let sql = await response.text();
     sql = sql.replace(/^\uFEFF/, '');
